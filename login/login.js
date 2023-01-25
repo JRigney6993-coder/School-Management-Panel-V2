@@ -1,8 +1,9 @@
-// // Onclick of the button
-// document.querySelector("button").onclick = function () {  
-//     // Call python's random_python function
-//     eel.random_python()(function(number){                      
-//       // Update the div with a random number returned by python
-//       document.querySelector(".random_number").innerHTML = number;
-//     })
-//   }
+document.querySelector(".btn").onclick = function () {  
+    let username = document.getElementById("username")
+    let password = document.getElementById("password")
+
+    eel.login(username, password)(function(result){     
+        console.log(result);                 
+        document.getElementById("output").innerHTML = result;
+    })
+  }
