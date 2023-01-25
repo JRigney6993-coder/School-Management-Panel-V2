@@ -1,38 +1,70 @@
 import eel
-# import json
-# import bcrypt
-  
+import bcrypt
+from pymongo import MongoClient
+from pathlib import Path
+
+# Connect to eel
 eel.init("login")  
-  
-# @eel.expose    
-# def register_user(username, password, job):
-#     # Hash the password using bcrypt library
-#     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt(12))
-#     # Create the user object with hashed password converted to hex
-#     new_user = {"username": username, "password": hashed_password.hex(), "job": job}
-    
-#     with open("users.json", "a+") as json_file:
-#         json_file.seek(0)
-#         data = json.load(json_file) if json_file.read(1) else {"users": []}
-#         for user in data["users"]:
-#             if user["username"] == username:
-#                 return "username already exists"
-#         data["users"].append(new_user)
-#         json_file.seek(0)
-#         json.dump(data, json_file)
 
-# @eel.expose
-# def login(username, password):
-#     with open("users.json", "r") as json_file:
-#         data = json.load(json_file)
-#     for user in data["users"]:
-#         if user["username"] == username:
-#             hashed_password_from_file = bytes.fromhex(user["password"])
-#             if bcrypt.checkpw(password.encode(), hashed_password_from_file):
-#                     return "yes"
-#     return "no"
+# Connect to MongoDB
+client = MongoClient("mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
+db = client["school-cluster"]
+users = db["staff"]
+school_data = db["school-data"]
 
-# register_user("jrigney6993","1076993","teacher")
 
-# Start the index.html file
-eel.start("index.html")
+
+@eel.expose
+def register_user(username, password, admin):
+    # Hash the password
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    # Insert the new user into the database
+    users.insert_one({
+        "username": username,
+        "password": hashed_password,
+        "admin": admin,
+        "classes": [
+            {
+                "subject": "test",
+                "students": [],
+                "class-grade": 100
+            }
+        ]
+    })
+    print("User registered successfully.")
+
+@eel.expose
+def delete_user(username):
+    # Find the user in the database
+    user = users.find_one({"username": username})
+    if user:
+        # Delete the user from the database
+        users.delete_one({"username": username})
+        return "User deleted successfully."
+        
+    else:
+        return "User not found."
+
+
+@eel.expose
+def login(username, password):
+    # Find the user in the database
+    user = users.find_one({"username": username})
+    # Compare the hashed password in the database with the provided password
+    if user and bcrypt.checkpw(password.encode('utf-8'), user["password"]):
+        return True
+    else:
+        return False
+
+@eel.expose
+def show_users():
+    users_data = users.find()
+    for user in users_data:
+        print(user)
+
+show_users()
+
+
+
+# Start the index.html file / Brings user to the login page
+eel.start("index.html", size=(740, 600), position=(600,200))
