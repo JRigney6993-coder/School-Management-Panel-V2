@@ -1,17 +1,17 @@
 import eel
 import bcrypt
 from pymongo import MongoClient
-from pathlib import Path
+
 
 # Connect to eel
-eel.init("login")  
+eel.init("web")
 
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient(
+    "mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
 db = client["school-cluster"]
 users = db["staff"]
 school_data = db["school-data"]
-
 
 
 @eel.expose
@@ -33,6 +33,7 @@ def register_user(username, password, admin):
     })
     print("User registered successfully.")
 
+
 @eel.expose
 def delete_user(username):
     # Find the user in the database
@@ -41,7 +42,7 @@ def delete_user(username):
         # Delete the user from the database
         users.delete_one({"username": username})
         return "User deleted successfully."
-        
+
     else:
         return "User not found."
 
@@ -56,15 +57,16 @@ def login(username, password):
     else:
         return False
 
+
 @eel.expose
 def show_users():
     users_data = users.find()
     for user in users_data:
         print(user)
 
+
 show_users()
 
 
-
 # Start the index.html file / Brings user to the login page
-eel.start("index.html", size=(740, 600), position=(600,200))
+eel.start("index.html", size=(740, 600), position=(600, 200))
