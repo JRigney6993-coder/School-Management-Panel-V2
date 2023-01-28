@@ -5,10 +5,9 @@ from pymongo import MongoClient
 
 # Connect to eel
 eel.init("web")
-
+    
 # Connect to MongoDB
-client = MongoClient(
-    "mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
 db = client["school-cluster"]
 users = db["staff"]
 school_data = db["school-data"]
