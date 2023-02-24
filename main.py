@@ -1,13 +1,15 @@
-import eel
 import bcrypt
+import eel
 from pymongo import MongoClient
+
 from py import student_management
 
 # Connect to eel
 eel.init("web")
-    
+
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient(
+    "mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
 db = client["school-cluster"]
 users = db["staff"]
 school_data = db["school-data"]
@@ -65,7 +67,6 @@ def show_users():
 
 
 student_management.main()
-
 
 
 # Start the index.html file / Brings user to the login page

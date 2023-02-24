@@ -1,44 +1,70 @@
-class Student():
-    def __init__(self, firstName, lastName, gender, birthDate, parentEmail, studentId, p1, p2, p3, p4):
-        self.firstName = firstName
-        self.lastName = lastName
-        self.gender = gender
-        self.studentId = studentId
-        self.birthDate = birthDate
-        self.studentEmail = firstName + lastName + studentId + "@gmail.com"
-        self.parentEmail = parentEmail
-        self.grades = {
-            "period1": p1,
-            "period2": p2,
-            "period3": p3,
-            "period4": p4,
-            "overall": (p1 + p2 + p3 + p4)/4
-        }
-        self.points = 0
-        self.notes = []
+import pymongo
+from pymongo import MongoClient
 
-    def get_name(self):
-        return self.firstName + " " + self.lastName
+client = pymongo.MongoClient(
+    "mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
 
-    def get_grade_average(self):
-        sum([val for key, val in self.grades.items()
-            if key != "overall"]) / (len(self.grades) - 1)
 
-    def add_grade(self, grade, score):
-        if score and grade:
-            try:
-                self.grades[grade] += score
-                self.grades[grade] /= 2
-                self.get_grade_average()
-                return True
-            except:
-                return False
-        else:
-            return False
+db = client["school-managment"]["students"]
 
-    def add_note(self, note):
-        if note:
-            self.notes.append(note)
-            return True
-        else:
-            return False
+test = [1, 2, 3, 4]
+
+
+# def addStudent(first_name, last_name, id, p1, p2, p3, p4, absences, referals):
+#     db.insert_one({
+#         "first_name": first_name,
+#         "last_name": last_name,
+#         "id": id,
+#         "email": first_name + last_name + str(id) + "@school.com",
+#         "p1":})
+
+
+def Test(test):
+    print(test[1])
+
+
+Test(test)
+# class Student():
+#     def __init__(self, firstName, lastName, gender, birthDate, parentEmail, studentId, p1, p2, p3, p4):
+#         self.firstName = firstName
+#         self.lastName = lastName
+#         self.gender = gender
+#         self.studentId = studentId
+#         self.birthDate = birthDate
+#         self.studentEmail = firstName + lastName + studentId + "@gmail.com"
+#         self.parentEmail = parentEmail
+#         self.grades = {
+#             "period1": p1,
+#             "period2": p2,
+#             "period3": p3,
+#             "period4": p4,
+#             "overall": (p1 + p2 + p3 + p4)/4
+#         }
+#         self.points = 0
+#         self.notes = []
+
+#     def get_name(self):
+#         return self.firstName + " " + self.lastName
+
+#     def get_grade_average(self):
+#         sum([val for key, val in self.grades.items()
+#             if key != "overall"]) / (len(self.grades) - 1)
+
+#     def add_grade(self, grade, score):
+#         if score and grade:
+#             try:
+#                 self.grades[grade] += score
+#                 self.grades[grade] /= 2
+#                 self.get_grade_average()
+#                 return True
+#             except:
+#                 return False
+#         else:
+#             return False
+
+#     def add_note(self, note):
+#         if note:
+#             self.notes.append(note)
+#             return True
+#         else:
+#             return False
