@@ -4,6 +4,10 @@
     width: 8rem;
 }
 
+.text-xs {
+    white-space: nowrap;
+}
+
 @media (max-width: 840px) {
     .side-bar {
         margin-left: 0;
@@ -11,6 +15,5 @@
 
     .text-xs {
         font-size: .75rem;
-        white-space: nowrap;
     }
 }
