@@ -23,6 +23,17 @@ def create_admin(first_name, last_name, email, Id, password):
     admins.insert_one(admin)
 
 
+def remove_admin(first_name, last_name, email, Id):
+    admin = {
+        "First_name": first_name,
+        "Last_name": last_name,
+        "Email": email,
+        "ID": Id
+    }
+
+    admins.delete_one(admin)
+
+
 def create_teacher(first_name, last_name, email, Id, password):
     teacher = {
         "First_name": first_name,
@@ -42,3 +53,14 @@ def create_teacher(first_name, last_name, email, Id, password):
     }
 
     teachers.insert_one(teacher)
+
+
+def remove_teacher(first_name, last_name, email, ID):
+    teacher = {
+        "First_name": first_name,
+        "Last_name": last_name,
+        "Email": email,
+        "ID": ID
+    }
+
+    teachers.delete_one(teacher)
