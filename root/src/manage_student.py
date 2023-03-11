@@ -26,3 +26,12 @@ def add_student(first_name, last_name, email):
     }
 
     students.insert_one(student)
+
+
+def update_student(ID, selector, change):
+    student = {
+        "ID": ID,
+    }
+    update = {"$set": {selector: change}}
+
+    students.update_one(student, update)
