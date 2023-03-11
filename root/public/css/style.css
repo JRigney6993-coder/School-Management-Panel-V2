@@ -1,0 +1,16 @@
+.button-center {
+    display: block;
+    margin: auto;
+    width: 8rem;
+}
+
+@media (max-width: 840px) {
+    .side-bar {
+        margin-left: 0;
+    }
+
+    .text-xs {
+        font-size: .75rem;
+        white-space: nowrap;
+    }
+}
