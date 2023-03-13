@@ -256,7 +256,7 @@
         <div class="w-full md:w-1/2 px-3 mb-3 md:mb-0">
       <div class="relative w-full h-14 py-4 px-3 mb-8 border border-gray-400 hover:border-white focus-within:border-green-500 rounded-lg">
         <span class="absolute bottom-full left-0 ml-3 -mb-1 transform translate-y-0.5 text-xs font-semibold text-gray-300 px-1 bg-gray-600">Start (Date)</span>
-        <input class="block w-full outline-none bg-transparent text-sm text-gray-100 font-medium" type="text" placeholder="0/0/0000" name="" id="start-date">
+        <input class="block w-full outline-none bg-transparent text-sm text-gray-100 font-medium" type="text" placeholder="0/0/0000" pattern="\d{2}-\d{2}-\d{4}" name="" id="start-date">
       </div>
       
       <div class="relative w-full h-14 py-4 px-3 mb-8 border border-gray-400 hover:border-white focus-within:border-green-500 rounded-lg">
@@ -266,7 +266,7 @@
       
       <div class="relative w-full h-14 py-4 px-3 mb-8 border border-gray-400 hover:border-white focus-within:border-green-500 rounded-lg">
         <span class="absolute bottom-full left-0 ml-3 -mb-1 transform translate-y-0.5 text-xs font-semibold text-gray-300 px-1 bg-gray-600">Event Presets (Option)</span>
-        <select class="block w-full outline-none bg-transparent text-sm text-gray-100 font-medium events" name="field-name"><option>Football</option><option>Soccer</option><option>Baseball</option><option>Tennis</option><option>Softball</option><option>Science Fair</option><option>Spelling Bee</option><option>Talent Show</option><option>Dance</option><option>Club Event</option><option>Other</option></select><div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+        <select class="block w-full outline-none bg-transparent text-sm text-gray-100 font-medium events" name="field-name" id="Presets"><option>Football</option><option>Soccer</option><option>Baseball</option><option>Tennis</option><option>Softball</option><option>Science Fair</option><option>Spelling Bee</option><option>Talent Show</option><option>Dance</option><option>Club Event</option><option>Other</option></select><div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
           <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></div>
       </div>
       </div>
@@ -400,6 +400,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="js/charts-demo.js"></script>
+    <script src="./js/mid/events/event-manager.js"></script>
 </body>
 </html>
 

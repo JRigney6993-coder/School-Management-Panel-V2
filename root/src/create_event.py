@@ -7,13 +7,13 @@ db = client["school-cluster"]
 events = db["events"]
 
 
-def create_event(start_date, end_date, event_name, location, attendees):
+def create_event(start_date, end_date, event_name, location):
     event = {
         "Event_name": event_name,
         "Location": location,
         "Start_date": start_date,
         "End_date": end_date,
-        "Attendees": attendees
+        "ID": events.count_documents({})
     }
 
     events.insert_one(event)
