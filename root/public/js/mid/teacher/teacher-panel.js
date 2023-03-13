@@ -1,4 +1,4 @@
-$('.add-absence').click(function () {
+$('.add-absence').on('click', function () {
     let studentID = $('#student-id').val();
     let absence = $('#absence').val();
 
@@ -19,7 +19,7 @@ $('.add-absence').click(function () {
     }
 })
 
-$('.add-grade').click(function () {
+$('.add-grade').on('click',function () {
     let studentID = $('#student-id').val();
     let period = $('#period').val();
     let grade = $('#grade').val();
@@ -45,7 +45,7 @@ $('.add-grade').click(function () {
     }
 })
 
-$('.add-referral').click(function () {
+$('.add-referral').on('click', function () {
     let period = $('#period').val();
     let referral = $('#referral').val();
 
