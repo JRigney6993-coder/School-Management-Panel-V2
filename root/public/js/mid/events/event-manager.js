@@ -10,7 +10,7 @@ $(".create-event").on('click', function() {
     if(start.val() && end.val() && location.val() && name.val()) {
         if(name.length <= 15){
             alert(start.val() + " " + end.val() + " " + name.val() + " " + location.val());
-            // eel.create_event(start, end, name, location);
+            // eel.create_event(start.val(), end.val(), name.val(), location.val());
             start.val(""); end.val(""); location.val(""); name.val("");
         }else alert("Name must be less than 15 characters");
 
@@ -24,7 +24,7 @@ $(".add-attendee").on('click', function() {
 
     if(student_id.val() && event_id.val()) {
         alert(student_id.val() + " " + event_id.val());
-        // eel.add_attendee(event_id, student_id);
+        // eel.add_attendee(event_id.val(), student_id.val());
         student_id.val(""); event_id.val("");
     }else alert("Please fill in all the fields");
 });
