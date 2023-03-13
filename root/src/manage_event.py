@@ -8,9 +8,10 @@ events = db["events"]
 students = db["students"]
 
 
-def create_event(start_date, end_date, event_name, location):
+def create_event(start_date, end_date, event_name, desc, location):
     event = {
         "Event_name": event_name,
+        "Event description": desc,
         "Location": location,
         "Start_date": start_date,
         "End_date": end_date,
