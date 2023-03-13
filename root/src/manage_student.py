@@ -29,9 +29,4 @@ def add_student(first_name, last_name, email):
 
 
 def update_student(ID, selector, change):
-    student = {
-        "ID": ID,
-    }
-    update = {"$set": {selector: change}}
-
-    students.update_one(student, update)
+    students.update_one({"ID": ID}, {"$set": {selector: change}})
