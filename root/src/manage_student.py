@@ -5,12 +5,14 @@ client = MongoClient(
 db = client["school-cluster"]
 
 students = db["students"]
+teachers = db["teachers"]
 
 
-def add_student(first_name, last_name, email):
+def add_student(full_name, email):
+    full_name = full_name.split(" ")
     student = {
-        "First_Name": first_name,
-        "Last_Name": last_name,
+        "First_Name": full_name[0],
+        "Last_Name": full_name[1],
         "Email": email,
         "ID": students.count_documents({}),
         "Points": 0,
@@ -30,3 +32,11 @@ def add_student(first_name, last_name, email):
 
 def update_student(ID, selector, change):
     students.update_one({"ID": ID}, {"$set": {selector: change}})
+
+
+def add_student(student_id, teacher_id, period):
+    teachers.update_one({"ID": teacher_id}, {"$push": {period: student_id}})
+
+
+def remove_student(student_id, teacher_id, period):
+    teachers.update_one({"ID": teacher_id}, {"$pop": {period: student_id}})
