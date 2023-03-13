@@ -1,15 +1,15 @@
 $(".create-event").on('click', function() {
-    let startDate = $("#start-date");
-    let endDate = $("#end-date");
-    let location = $("#location");
-    let desc = $("#name");
-    let presets = $('#Presets').find(":selected").val();
+    let startDate = $("#start-date").val();
+    let endDate = $("#end-date").val();
+    let location = $("#location").val();
+    let desc = $("#name").val();
+    let presets = $('#Presets').val();
     
-    if(startDate.val() && endDate.val() && location.val() && desc.val() && presets) {
+    if(startDate && endDate && location && desc && presets) {
         if(desc.length <= 15){
             // eel.create_event(startDate, endDate, presets, desc, location);
             alert('passed through!');
-            startDate.val(''); endDate.val(''); location.val(''); desc.val('');
+            $("#start-date, #end-date, #location, #name").val('');
 
         } else alert("Name must be less than 15 characters");
     } else alert("Please fill in all the fields");
@@ -17,12 +17,12 @@ $(".create-event").on('click', function() {
 
 
 $(".add-attendee").on('click', function() {
-    let studentID = $("#SID");
-    let eventID = $("#EID");
+    let studentID = $("#SID").val();
+    let eventID = $("#EID").val();
 
-    if(studentID.val() && eventID.val()) {
+    if(studentID && eventID) {
         // eel.add_attendee(eventID, studentID);
         alert('passed through!')
-        studentID.val(''); eventID.val('');
+        $("#SID, #EID").val('');
     } else alert("Please fill in all the fields");
 });
