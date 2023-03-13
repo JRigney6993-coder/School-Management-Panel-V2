@@ -16,3 +16,15 @@ $(".create-event").on('click', function() {
 
     }else alert("Please fill in all the fields");
 });
+
+
+$(".add-attendee").on('click', function() {
+    let student_id = $("#SID");
+    let event_id = $("#EID");
+
+    if(student_id.val() && event_id.val()) {
+        alert(student_id.val() + " " + event_id.val());
+        // eel.add_attendee(event_id, student_id);
+        student_id.val(""); event_id.val("");
+    }else alert("Please fill in all the fields");
+});
