@@ -4,14 +4,14 @@ $(".add-student").on("click", function() {
 
     if(studentEmail && studentName){
         // eel.add_student(studentName, studentEmail);
-        alert('passed through!')
+        alert('passed through!');
         $("#name, #email").val("");
     } else alert("Please fill in all fields");
 });
 
 $(".add-to-class").on("click", function() {
-    let studentID = $("#student-id-add").val();
-    let teacherID = $("#teacher-id-add").val();
+    let studentID = parseInt($("#student-id-add").val());
+    let teacherID = parseInt($("#teacher-id-add").val());
     let period = $("input[name='inline-radio']:checked");
 
     if(studentID && teacherID && period.val()){
@@ -26,8 +26,8 @@ $(".add-to-class").on("click", function() {
 });
 
 $(".remove-from-class").on("click", function() {
-    let studentID = $("#student-id-remove").val();
-    let teacherID = $("#teacher-id-remove").val();
+    let studentID = parseInt($("#student-id-remove").val());
+    let teacherID = parseInt($("#teacher-id-remove").val());
     let period = $("input[name='inline-radio']:checked");
 
     if(studentID && teacherID && period.val()){

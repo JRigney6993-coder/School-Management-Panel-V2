@@ -34,13 +34,13 @@ def remove_admin(first_name, last_name, email, Id):
     admins.delete_one(admin)
 
 
-def create_teacher(first_name, last_name, email, Id, password):
+def create_teacher(first_name, last_name, email, password):
     teacher = {
         "First_name": first_name,
         "Last_name": last_name,
         "Email": email,
-        "ID": Id,
-        "Password": "",
+        "ID": teachers.count_documents({}),
+        "Password": password,
         # (must incrypt the password)
         "Profile_pic": "",
         "Bio": "",
@@ -55,10 +55,8 @@ def create_teacher(first_name, last_name, email, Id, password):
     teachers.insert_one(teacher)
 
 
-def remove_teacher(first_name, last_name, email, ID):
+def remove_teacher(email, ID):
     teacher = {
-        "First_name": first_name,
-        "Last_name": last_name,
         "Email": email,
         "ID": ID
     }
