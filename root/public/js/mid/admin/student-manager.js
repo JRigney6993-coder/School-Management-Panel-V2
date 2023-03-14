@@ -15,9 +15,13 @@ $(".add-to-class").on("click", function() {
     let period = $("input[name='inline-radio']:checked");
 
     if(studentID && teacherID && period.val()){
-        // eel.add_student(studentID, teacherID, period);
-        alert('passed through!')
-        $("#student-id-add, #teacher-id-add").val("");
+        if (Number.isInteger(parseInt(studentID)) && Number.isInteger(parseInt(teacherID))) {
+            // eel.add_student(studentID, teacherID, period);
+            
+            $('#student-id-add, #teacher-id-add').val('');
+            alert('passed through!')
+
+        } else alert("Make sure IDs are numbers");
     } else alert("Please fill in all fields");
 });
 
@@ -27,8 +31,12 @@ $(".remove-from-class").on("click", function() {
     let period = $("input[name='inline-radio']:checked");
 
     if(studentID && teacherID && period.val()){
-        // eel.remove_student(studentID, teacherID, period);
-        alert('passed through!')
-        $("#student-id-remove, #teacher-id-remove").val("");
+        if (Number.isInteger(parseInt(studentID)) && Number.isInteger(parseInt(teacherID))) {
+            // eel.remove_student(studentID, teacherID, period);
+            
+            $('#student-id-remove, #teacher-id-remove').val('');
+            alert('passed through!');
+
+        } else alert("Make sure IDs are numbers");
     } else alert("Please fill in all fields");
 });
