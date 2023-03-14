@@ -17,8 +17,8 @@ $(".create-event").on('click', function() {
 
 
 $(".add-attendee").on('click', function() {
-    let studentID = $("#SID").val();
-    let eventID = $("#EID").val();
+    let studentID = parseInt($("#SID").val());
+    let eventID = parseInt($("#EID").val());
 
     if(studentID && eventID) {
         // eel.add_attendee(eventID, studentID);
