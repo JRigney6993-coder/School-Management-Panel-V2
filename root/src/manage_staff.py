@@ -9,29 +9,22 @@ admins = db["admin"]
 teachers = db["teachers"]
 
 
-def create_admin(first_name, last_name, email, Id, password):
+def create_admin(first_name, last_name, email, password):
     admin = {
         "First_name": first_name,
         "Last_name": last_name,
         "Email": email,
-        "Password": "",
+        "Password": password,
         # (must incrypt the password)
-        "ID": Id,
+        "ID": admins.count_documents({}),
         "Profile_pic": "",
         "Bio": ""
     }
     admins.insert_one(admin)
 
 
-def remove_admin(first_name, last_name, email, Id):
-    admin = {
-        "First_name": first_name,
-        "Last_name": last_name,
-        "Email": email,
-        "ID": Id
-    }
-
-    admins.delete_one(admin)
+def remove_admin(email, Id):
+    admins.delete_one({"Email": email, "ID": Id})
 
 
 def create_teacher(first_name, last_name, email, password):

@@ -40,3 +40,14 @@ def add_student(student_id, teacher_id, period):
 
 def remove_student(student_id, teacher_id, period):
     teachers.update_one({"ID": teacher_id}, {"$pop": {period: student_id}})
+
+
+def add_absence(student_id):
+    students.update_one({"ID": student_id}, {"$inc": {"Absences": 1}})
+
+
+# def add_grade(student_id, period, grade):
+#     students.update_one({"ID": student_id}, {
+#                         "$set": {"Grades": {period: grade}}})
+
+# add_referal

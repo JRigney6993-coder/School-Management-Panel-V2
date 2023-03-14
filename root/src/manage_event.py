@@ -22,7 +22,7 @@ def create_event(start_date, end_date, event_name, desc, location):
 
 
 def add_attendees(event_id, student_id):
-    if event_id < events.count_documents({}):
+    if event_id <= events.count_documents({}):
         students.update_one({"ID": student_id}, {"$inc": {"Points": 1}})
     else:
         print("Event does not exist")
