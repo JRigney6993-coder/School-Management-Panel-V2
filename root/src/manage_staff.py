@@ -56,9 +56,4 @@ def create_teacher(first_name, last_name, email, password):
 
 
 def remove_teacher(email, ID):
-    teacher = {
-        "Email": email,
-        "ID": ID
-    }
-
-    teachers.delete_one(teacher)
+    teachers.delete_one({"Email": email, "ID": ID})
