@@ -2,66 +2,163 @@ import eel
 import bcrypt
 from pymongo import MongoClient
 
-# Connect to eel
 eel.init("root/public")
 
-# Connect to MongoDB
+# Connects to database/cluster
 client = MongoClient(
     "mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
 db = client["school-cluster"]
-users = db["staff"]
-school_data = db["school-data"]
 
+students = db["students"]
+teachers = db["teachers"]
+admins = db["admins"]
+management = db["management"]
+events = db["events"]
+reports = db["reports"]
 
-# @eel.expose
-# def register_user(username, password, admin):
-#     # Hash the password
-#     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-#     # Insert the new user into the database
-#     users.insert_one({
-#         "username": username,
-#         "password": hashed_password,
-#         "admin": admin,
-#         "classes": [
-#             {
-#                 "subject": "test",
-#                 "students": [],
-#                 "class-grade": 100
-#             }
-#         ]
-#     })
-#     print("User registered successfully.")
+####################
+# Useful Functions #
+####################
 
+def bcrypt_password(password):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-@eel.expose
-def delete_user(username):
-    # Find the user in the database
-    user = users.find_one({"username": username})
-    if user:
-        # Delete the user from the database
-        users.delete_one({"username": username})
-        return "User deleted successfully."
-
-    else:
-        return "User not found."
-
+#########
+# Login #
+#########
 
 @eel.expose
 def login(username, password):
-    # Find the user in the database
-    user = users.find_one({"username": username})
-    # Compare the hashed password in the database with the provided password
+    user = client["teachers"].find_one({"username": username}) or client["admins"].find_one({"username": username}) or client["management"].find_one({"username": username})
+    
     if user and bcrypt.checkpw(password.encode('utf-8'), user["password"]):
-        return True
+        return user["password"]
+    else:
+        return "Passwords do not match"
+
+######################
+# Student Management #
+######################
+
+@eel.expose
+def add_student(full_name, email):
+    full_name = full_name.split(" ")
+    student = {
+        "First_Name": full_name[0],
+        "Last_Name": full_name[1],
+        "Email": email,
+        "ID": students.count_documents({}),
+        "Points": 0,
+        "Absences": 0,
+        "Referrals": [],
+        "Prizes": [],
+        "Grades": {
+            "Period_1": 100,
+            "Period_2": 100,
+            "Period_3": 100,
+            "Period_4": 100
+        }
+    }
+    students.insert_one(student)
+
+@eel.expose
+def update_student(ID, selector, change):
+    students.update_one({"ID": ID}, {"$set": {selector: change}})
+
+@eel.expose
+def add_student_class(student_id, teacher_id, period):
+    teachers.update_one({"ID": teacher_id}, {"$push": {period: student_id}})
+
+@eel.expose
+def remove_student_class(student_id, teacher_id, period):
+    teachers.update_one({"ID": teacher_id}, {"$pop": {period: student_id}})
+
+@eel.expose
+def add_absence(student_id):
+    students.update_one({"ID": student_id}, {"$inc": {"Absences": 1}})
+
+# @eel.expose
+# def add_grade(student_id, period, grade):
+#     students.update_one({"ID": student_id}, {
+#                         "$set": {"Grades": {period: grade}}})
+
+######################
+# Teacher Management #
+######################
+
+@eel.expose
+def create_teacher(first_name, last_name, email, password):
+    teacher = {
+        "First_name": first_name,
+        "Last_name": last_name,
+        "Email": email,
+        "ID": teachers.count_documents({}),
+        "Password": bcrypt_password(password),
+        "Profile_pic": "",
+        "Bio": "",
+        "Classes": {
+            "Period_1": [],
+            "Period_2": [],
+            "Period_3": [],
+            "Period_4": [],
+        }
+    }
+    teachers.insert_one(teacher)
+
+@eel.expose
+def remove_teacher(email, ID):
+    teachers.delete_one({"Email": email, "ID": ID})
+
+####################
+# Admin Management #
+####################
+
+@eel.expose
+def create_admin(first_name, last_name, email, password):
+    admin = {
+        "First_name": first_name,
+        "Last_name": last_name,
+        "Email": email,
+        "Password": bcrypt_password(password),
+        "ID": admins.count_documents({}),
+        "Profile_pic": "",
+        "Bio": ""
+    }
+    admins.insert_one(admin)
+
+@eel.expose
+def remove_admin(email, Id):
+    admins.delete_one({"Email": email, "ID": Id})
+
+####################
+# Event Management #
+####################
+
+@eel.expose
+def create_event(start_date, end_date, event_name, desc, location):
+    event = {
+        "Event_Name": event_name,
+        "Event_Type": desc,
+        "Location": location,
+        "Start_Date": start_date,
+        "End_Date": end_date,
+        "ID": events.count_documents({})
+    }
+    events.insert_one(event)
+
+@eel.expose
+def add_attendees(event_id, student_id):
+    if event_id <= events.count_documents({}):
+        students.update_one({"ID": student_id}, {"$inc": {"Points": 1}})
     else:
         return False
 
+#####################
+# Report Management #
+#####################
 
-@eel.expose
-def show_users():
-    users_data = users.find()
-    for user in users_data:
-        print(user)
+
+
 
 
 # Start the index.html file / Brings user to the login page
