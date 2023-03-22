@@ -1,5 +1,5 @@
-import eel
 import bcrypt
+import eel
 from pymongo import MongoClient
 
 eel.init("root/public")
@@ -20,6 +20,7 @@ reports = db["reports"]
 # Useful Functions #
 ####################
 
+
 def bcrypt_password(password):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
@@ -27,10 +28,12 @@ def bcrypt_password(password):
 # Login #
 #########
 
+
 @eel.expose
 def login(username, password):
-    user = client["teachers"].find_one({"username": username}) or client["admins"].find_one({"username": username}) or client["management"].find_one({"username": username})
-    
+    user = client["teachers"].find_one({"username": username}) or client["admins"].find_one(
+        {"username": username}) or client["management"].find_one({"username": username})
+
     if user and bcrypt.checkpw(password.encode('utf-8'), user["password"]):
         return user["password"]
     else:
@@ -39,6 +42,7 @@ def login(username, password):
 ######################
 # Student Management #
 ######################
+
 
 @eel.expose
 def add_student(full_name, email):
@@ -61,30 +65,40 @@ def add_student(full_name, email):
     }
     students.insert_one(student)
 
+
 @eel.expose
 def update_student(ID, selector, change):
     students.update_one({"ID": ID}, {"$set": {selector: change}})
+
 
 @eel.expose
 def add_student_class(student_id, teacher_id, period):
     teachers.update_one({"ID": teacher_id}, {"$push": {period: student_id}})
 
+
 @eel.expose
 def remove_student_class(student_id, teacher_id, period):
     teachers.update_one({"ID": teacher_id}, {"$pop": {period: student_id}})
 
+
 @eel.expose
-def add_absence(student_id):
-    students.update_one({"ID": student_id}, {"$inc": {"Absences": 1}})
+def add_absence(student_id, absences):
+    students.update_one({"ID": student_id}, {"$inc": {"Absences": absences}})
 
-# @eel.expose
-# def add_grade(student_id, period, grade):
-#     students.update_one({"ID": student_id}, {
-#                         "$set": {"Grades": {period: grade}}})
 
+@eel.expose
+def add_grade(student_id, period, grade):
+    students.update_one({"ID": student_id}, {
+                        "$set": {"Grades": {period: grade}}})
+
+
+@eel.expose
+def add_referrals(student_id, referral):
+    students.update_one({"ID": student_id}, {"$set": {"Referrals": referral}})
 ######################
 # Teacher Management #
 ######################
+
 
 @eel.expose
 def create_teacher(first_name, last_name, email, password):
@@ -105,6 +119,7 @@ def create_teacher(first_name, last_name, email, password):
     }
     teachers.insert_one(teacher)
 
+
 @eel.expose
 def remove_teacher(email, ID):
     teachers.delete_one({"Email": email, "ID": ID})
@@ -112,6 +127,7 @@ def remove_teacher(email, ID):
 ####################
 # Admin Management #
 ####################
+
 
 @eel.expose
 def create_admin(first_name, last_name, email, password):
@@ -126,6 +142,7 @@ def create_admin(first_name, last_name, email, password):
     }
     admins.insert_one(admin)
 
+
 @eel.expose
 def remove_admin(email, Id):
     admins.delete_one({"Email": email, "ID": Id})
@@ -133,6 +150,7 @@ def remove_admin(email, Id):
 ####################
 # Event Management #
 ####################
+
 
 @eel.expose
 def create_event(start_date, end_date, event_name, desc, location):
@@ -146,6 +164,7 @@ def create_event(start_date, end_date, event_name, desc, location):
     }
     events.insert_one(event)
 
+
 @eel.expose
 def add_attendees(event_id, student_id):
     if event_id <= events.count_documents({}):
@@ -156,9 +175,6 @@ def add_attendees(event_id, student_id):
 #####################
 # Report Management #
 #####################
-
-
-
 
 
 # Start the index.html file / Brings user to the login page
