@@ -16,6 +16,7 @@ $(".create-event").on('click', function() {
     } else alert("Please fill in all the fields");
 });
 
+// ----------------------------------------------------------------
 
 $(".add-attendee").on('click', function() {
     let studentID = parseInt($("#SID").val());
