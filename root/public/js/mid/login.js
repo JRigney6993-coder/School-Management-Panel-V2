@@ -2,5 +2,9 @@ $('#submit').click(function () {
     let email = $('#email').val();
     let password = $('#password').val();
     // login stuff yes
-    alert('passed through!')
+    if (eel.login(email, password)) {
+        alert("aaaaaa")
+    } else {
+        alert("eeee")
+    }
 })
