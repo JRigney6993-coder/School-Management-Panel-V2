@@ -51,9 +51,12 @@ def delete_user(username):
 def login(username, password):
     # Find the user in the database
     user = users.find_one({"username": username})
-    # Compare the hashed password in the database with the provided password
-    if user and bcrypt.checkpw(password.encode('utf-8'), user["password"]):
-        return True
+    if users.find_one({"username": username}):
+        # Compare the hashed password in the database with the provided password
+        if user and bcrypt.checkpw(password.encode('utf-8'), user["password"]):
+            return True
+        else:
+            return False
     else:
         return False
 
