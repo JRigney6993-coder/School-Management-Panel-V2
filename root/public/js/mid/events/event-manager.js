@@ -7,7 +7,7 @@ $(".create-event").on('click', function() {
     
     if(startDate && endDate && location && name && presets) {
         if(name.length <= 15){
-            // eel.create_event(startDate, endDate, name, location);
+            eel.create_event(startDate, endDate, name, location);
 
             $('#start-date, #end-date, #location, #name, #presets').val('');
             alert('passed through!');
@@ -16,6 +16,7 @@ $(".create-event").on('click', function() {
     } else alert("Please fill in all the fields");
 });
 
+// ----------------------------------------------------------------
 
 $(".add-attendee").on('click', function() {
     let studentID = parseInt($("#SID").val());
@@ -23,7 +24,7 @@ $(".add-attendee").on('click', function() {
 
     if(studentID && eventID) {
         if (Number.isInteger(parseInt(studentID)) && Number.isInteger(parseInt(eventID))) {
-            // eel.add_attendee(eventID, studentID);
+            eel.add_attendee(eventID, studentID);
 
             $("#SID, #EID").val('');
             alert('passed through!');
