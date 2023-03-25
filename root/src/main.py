@@ -2,8 +2,6 @@ import bcrypt
 import eel
 from pymongo import MongoClient
 
-eel.init("root/public")
-
 # Connects to database/cluster
 client = MongoClient(
     "mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
@@ -73,12 +71,14 @@ def update_student(ID, selector, change):
 
 @eel.expose
 def add_student_class(student_id, teacher_id, period):
-    teachers.update_one({"ID": teacher_id}, {"$push": {period: student_id}})
+    teachers.update_one({"ID": teacher_id}, {
+                        "$push": {f"Classes.{period}": student_id}})
 
 
 @eel.expose
 def remove_student_class(student_id, teacher_id, period):
-    teachers.update_one({"ID": teacher_id}, {"$pop": {period: student_id}})
+    teachers.update_one({"ID": teacher_id}, {
+                        "$pop": {f"Classes.{period}": student_id}})
 
 
 @eel.expose
@@ -176,6 +176,8 @@ def add_attendees(event_id, student_id):
 # Report Management #
 #####################
 
+
+eel.init("root/public")
 
 # Start the index.html file / Brings user to the login page
 eel.start("dashboard.html", size=(740, 600), position=(600, 200))

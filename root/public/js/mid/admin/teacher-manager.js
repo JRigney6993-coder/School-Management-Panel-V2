@@ -6,7 +6,7 @@ $(".add-teacher").on("click", function () {
 
     if(firstName && lastName && email && password) {
         alert('passed through!');
-        // eel.create_teacher(firstName, lastName, email, password);
+        eel.create_teacher(firstName, lastName, email, password);
         $("#first-name, #last-name, #email-add, #password").val('');
     }else alert("Please fill in all the fields"); 
 })
@@ -17,7 +17,7 @@ $(".remove-teacher").on("click", function () {
 
     if(TID && teacherEmail) {
         alert('passed through!');
-        // eel.remove_teacher(teacherEmail, TID);
+        eel.remove_teacher(teacherEmail, TID);
         $("#teacher-id, #email-remove").val('');
     }else alert("Please fill in all the fields"); 
 })

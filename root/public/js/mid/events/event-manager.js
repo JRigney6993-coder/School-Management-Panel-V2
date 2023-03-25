@@ -4,10 +4,10 @@ $(".create-event").on('click', function() {
     let location = $("#location").val();
     let name = $("#name").val();
     let presets = $('#presets').find(":selected").val();
-    
+
     if(startDate && endDate && location && name && presets) {
         if(name.length <= 15){
-            eel.create_event(startDate, endDate, name, location);
+            eel.create_event(startDate, endDate, name, presets, location);
 
             $('#start-date, #end-date, #location, #name, #presets').val('');
             alert('passed through!');
