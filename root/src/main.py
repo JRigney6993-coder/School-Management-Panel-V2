@@ -151,6 +151,16 @@ def remove_admin(email, Id):
 # Event Management #
 ####################
 
+@eel.expose
+def get_event_num():
+    print(events.collection.countDocuments())
+    return events.collection.countDocuments()
+
+@eel.expose
+def load_events(event_id):
+    event = events.find({'ID': event_id})
+    return {str(i): doc for i, doc in enumerate(event)}
+
 
 @eel.expose
 def create_event(start_date, end_date, event_name, desc, location):
@@ -160,6 +170,7 @@ def create_event(start_date, end_date, event_name, desc, location):
         "Location": location,
         "Start_Date": start_date,
         "End_Date": end_date,
+        "Attendees": [],
         "ID": events.count_documents({})
     }
     events.insert_one(event)
@@ -169,6 +180,7 @@ def create_event(start_date, end_date, event_name, desc, location):
 def add_attendees(event_id, student_id):
     if event_id <= events.count_documents({}):
         students.update_one({"ID": student_id}, {"$inc": {"Points": 1}})
+        events.update_one({"ID": event_id}, {"$push": {"Attendees": student_id}})
     else:
         return False
 
@@ -180,4 +192,4 @@ def add_attendees(event_id, student_id):
 eel.init("root/public")
 
 # Start the index.html file / Brings user to the login page
-eel.start("dashboard.html", size=(740, 600), position=(600, 200))
+eel.start("dashboard.html", size=(1400, 900), position=(300, 100))

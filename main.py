@@ -1,7 +1,7 @@
 import eel
 import bcrypt
 from pymongo import MongoClient
-from py import student_management
+
 
 # Connect to eel
 eel.init("web")
@@ -69,4 +69,4 @@ def show_users():
 
 
 # Start the index.html file / Brings user to the login page
-eel.start("index.html", size=(740, 600), position=(600, 200))
+eel.start("index.html", size=(1500, 1000), position=(600, 200))
