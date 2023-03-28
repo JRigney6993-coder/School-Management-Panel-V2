@@ -110,8 +110,8 @@ async function refresh_events() {
 }
 refresh_events();
 
-$(document).ready(function () {
-    $("#remove").click(function () {
+$(document).on("load", function () {
+    $("#remove").on("click", function () {
         var row = $(this).closest("tr");
         var eventID = row.find("td:nth-child(7)").text();
 
