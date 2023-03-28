@@ -30,14 +30,13 @@ def bcrypt_password(password):
 
 
 @eel.expose
-def login(username, password):
-    user = client["teachers"].find_one({"username": username}) or client["admins"].find_one(
-        {"username": username}) or client["management"].find_one({"username": username})
+def login(email, password):
+    user = teachers.find_one({"Email": email}) or admins.find_one({"Email": email}) or management.find_one({"Email": email})
 
-    if user and bcrypt.checkpw(password.encode('utf-8'), user["password"]):
-        return user["password"]
+    if user and bcrypt.checkpw(password.encode('utf-8'), user["Password"]):
+        return user["Password"].decode()
     else:
-        return "Passwords do not match"
+        return False
 
 ######################
 # Student Management #
@@ -195,4 +194,4 @@ def add_attendees(event_id, student_id):
 #####################
 
 # Start the index.html file / Brings user to the login page
-eel.start("dashboard.html", size=(1400, 900))
+eel.start("index.html", size=(1400, 900))

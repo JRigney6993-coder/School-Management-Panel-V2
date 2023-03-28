@@ -1,4 +1,3 @@
-$('.logout').click(function() {
-    // logout stuff yes
-    alert('You have been logged out');
-})
+$(".logout").on("click", function () {
+    localStorage.removeItem("userIdentity");
+});

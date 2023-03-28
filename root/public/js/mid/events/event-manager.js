@@ -98,7 +98,9 @@ async function refresh_events() {
                             $("<button>")
                                 .addClass(
                                     "inline-flex h-9 py-1 px-4 mb-2 items-center text-center text-sm font-bold text-white bg-blue-500 hover:bg-blue-600 transition duration-200 rounded-lg add-attendee button-center"
-                                ).attr('id', 'remove').text("Remove")
+                                )
+                                .attr("id", "remove")
+                                .text("Remove")
                         )
                 )
         );
@@ -108,9 +110,7 @@ async function refresh_events() {
 }
 refresh_events();
 
-
 $(document).ready(function () {
-
     $("#remove").click(function () {
         var row = $(this).closest("tr");
         var eventID = row.find("td:nth-child(7)").text();
@@ -177,11 +177,11 @@ $(document).ready(function () {
 });
 
 $(".remove").on("click", function () {
-  var row = $(this).closest("tr");
-  var eventID = row.find("td:nth-child(7)").text();
+    var row = $(this).closest("tr");
+    var eventID = row.find("td:nth-child(7)").text();
 
-  if (confirmation) {
-      eel.remove_event(eventID);
-      row.remove();
-  }
+    if (confirmation) {
+        eel.remove_event(eventID);
+        row.remove();
+    }
 });
