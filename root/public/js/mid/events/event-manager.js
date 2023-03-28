@@ -101,6 +101,12 @@ async function refresh_events() {
                                 )
                                 .attr("id", "remove")
                                 .text("Remove")
+                                .on('click', function(){
+                                    var row = $(this).closest("tr");
+                                    var eventID = row.find("td:nth-child(7)").text();
+                                    eel.remove_event(parseInt(eventID, 10));
+                                    row.remove();
+                                })
                         )
                 )
         );
@@ -176,12 +182,12 @@ $(document).on("load", function () {
     });
 });
 
-$(".remove").on("click", function () {
-    var row = $(this).closest("tr");
-    var eventID = row.find("td:nth-child(7)").text();
+// $(".remove").on("click", function () {
+//     var row = $(this).closest("tr");
+//     var eventID = row.find("td:nth-child(7)").text();
 
-    if (confirmation) {
-        eel.remove_event(eventID);
-        row.remove();
-    }
-});
+//     if (confirmation) {
+//         eel.remove_event(eventID);
+//         row.remove();
+//     }
+// });
