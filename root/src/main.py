@@ -2,6 +2,8 @@ import bcrypt
 import eel
 from pymongo import MongoClient
 
+eel.init("root/public")
+
 # Connects to database/cluster
 client = MongoClient(
     "mongodb+srv://jrigney6993:1076993@school-cluster.oafpkhl.mongodb.net/?retryWrites=true&w=majority")
@@ -153,13 +155,12 @@ def remove_admin(email, Id):
 
 @eel.expose
 def get_event_num():
-    print(events.collection.countDocuments())
-    return events.collection.countDocuments()
+    return events.count_documents({})
 
 @eel.expose
 def load_events(event_id):
-    event = events.find({'ID': event_id})
-    return {str(i): doc for i, doc in enumerate(event)}
+    result = list(events.find({"ID": event_id}))
+    return result
 
 
 @eel.expose
@@ -177,6 +178,11 @@ def create_event(start_date, end_date, event_name, desc, location):
 
 
 @eel.expose
+def remove_event(event_id):
+    events.delete_one({"ID": event_id})
+
+
+@eel.expose
 def add_attendees(event_id, student_id):
     if event_id <= events.count_documents({}):
         students.update_one({"ID": student_id}, {"$inc": {"Points": 1}})
@@ -188,8 +194,5 @@ def add_attendees(event_id, student_id):
 # Report Management #
 #####################
 
-
-eel.init("root/public")
-
 # Start the index.html file / Brings user to the login page
-eel.start("dashboard.html", size=(1400, 900), position=(300, 100))
+eel.start("dashboard.html", size=(1400, 900))

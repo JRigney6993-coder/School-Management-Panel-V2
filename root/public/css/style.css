@@ -8,6 +8,10 @@
     white-space: nowrap;
 }
 
+tr:nth-child(even) {
+    background-color: rgb(33, 39, 53);
+}
+
 @media (max-width: 840px) {
     .side-bar {
         margin-left: 0;
