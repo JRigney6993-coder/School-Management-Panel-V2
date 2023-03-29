@@ -4,6 +4,7 @@ async function refresh_events() {
 
     for (var i = 0; i < eventNum; i++) {
         var eventData = await eel.load_events(i)();
+        eventData = Object.values(eventData[0])
 
         var $row = $("<tr>").append(
             $("<td>")
@@ -19,7 +20,7 @@ async function refresh_events() {
                                         .addClass(
                                             "text-sm font-medium text-gray-100"
                                         )
-                                        .text(eventData[0]["Event_Name"])
+                                        .text(eventData[1])
                                 )
                         )
                 ),
@@ -31,7 +32,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[0]["Event_Type"])
+                                .text(eventData[2])
                         )
                 ),
             $("<td>")
@@ -42,7 +43,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[0]["Location"])
+                                .text(eventData[3])
                         )
                 ),
             $("<td>")
@@ -53,7 +54,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[0]["Start_Date"])
+                                .text(eventData[4])
                         )
                 ),
             $("<td>")
@@ -64,7 +65,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[0]["End_Date"])
+                                .text(eventData[5])
                         )
                 ),
             $("<td>")
@@ -75,7 +76,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[0]["Attendees"].length)
+                                .text(eventData[6].length)
                         )
                 ),
             $("<td>")
@@ -86,7 +87,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[0]["ID"])
+                                .text(eventData[7])
                         )
                 ),
             $("<td>")
@@ -115,17 +116,6 @@ async function refresh_events() {
     }
 }
 refresh_events();
-
-$(document).on("load", function () {
-    $("#remove").on("click", function () {
-        var row = $(this).closest("tr");
-        var eventID = row.find("td:nth-child(7)").text();
-
-        if (confirmation) {
-            eel.remove_event(eventID);
-            row.remove();
-        }
-    });
 
     $(".create-event").on("click", function () {
         let startDate = $("#start-date").val();
@@ -180,14 +170,3 @@ $(document).on("load", function () {
             }
         });
     });
-});
-
-// $(".remove").on("click", function () {
-//     var row = $(this).closest("tr");
-//     var eventID = row.find("td:nth-child(7)").text();
-
-//     if (confirmation) {
-//         eel.remove_event(eventID);
-//         row.remove();
-//     }
-// });
