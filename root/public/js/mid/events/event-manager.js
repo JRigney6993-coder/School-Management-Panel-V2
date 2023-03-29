@@ -1,10 +1,10 @@
 async function refresh_events() {
-    var eventNum = await eel.get_event_num()();
+    var eventData = await eel.load_events()();
     $("tbody").empty();
 
-    for (var i = 0; i < eventNum; i++) {
-        var eventData = await eel.load_events(i)();
-        eventData = Object.values(eventData[0])
+    for (var i = 0; i < eventData.length; i++) {
+        let data = Object.values(eventData[i]);
+        console.log(data);
 
         var $row = $("<tr>").append(
             $("<td>")
@@ -20,7 +20,7 @@ async function refresh_events() {
                                         .addClass(
                                             "text-sm font-medium text-gray-100"
                                         )
-                                        .text(eventData[1])
+                                        .text(data[1])
                                 )
                         )
                 ),
@@ -32,7 +32,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[2])
+                                .text(data[2])
                         )
                 ),
             $("<td>")
@@ -43,7 +43,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[3])
+                                .text(data[3])
                         )
                 ),
             $("<td>")
@@ -54,7 +54,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[4])
+                                .text(data[4])
                         )
                 ),
             $("<td>")
@@ -65,7 +65,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[5])
+                                .text(data[5])
                         )
                 ),
             $("<td>")
@@ -76,7 +76,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[6].length)
+                                .text(data[6].length)
                         )
                 ),
             $("<td>")
@@ -87,7 +87,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(eventData[7])
+                                .text(data[7])
                         )
                 ),
             $("<td>")

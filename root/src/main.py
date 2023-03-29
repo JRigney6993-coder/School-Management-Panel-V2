@@ -31,7 +31,8 @@ def bcrypt_password(password):
 
 @eel.expose
 def login(email, password):
-    user = teachers.find_one({"Email": email}) or admins.find_one({"Email": email}) or management.find_one({"Email": email})
+    user = teachers.find_one({"Email": email}) or admins.find_one(
+        {"Email": email}) or management.find_one({"Email": email})
 
     if user and bcrypt.checkpw(password.encode('utf-8'), user["Password"]):
         return user["Password"].decode()
@@ -152,14 +153,15 @@ def remove_admin(email, Id):
 # Event Management #
 ####################
 
+
 @eel.expose
 def get_event_num():
     return events.count_documents({})
 
+
 @eel.expose
-def load_events(event_id):
-    result = list(events.find({"ID": event_id}))
-    return result
+def load_events():
+    return list(events.find({}))
 
 
 @eel.expose
@@ -185,13 +187,15 @@ def remove_event(event_id):
 def add_attendees(event_id, student_id):
     if event_id <= events.count_documents({}):
         students.update_one({"ID": student_id}, {"$inc": {"Points": 1}})
-        events.update_one({"ID": event_id}, {"$push": {"Attendees": student_id}})
+        events.update_one({"ID": event_id}, {
+                          "$push": {"Attendees": student_id}})
     else:
         return False
 
 #####################
 # Report Management #
 #####################
+
 
 # Start the index.html file / Brings user to the login page
 eel.start("index.html", size=(1400, 900))
