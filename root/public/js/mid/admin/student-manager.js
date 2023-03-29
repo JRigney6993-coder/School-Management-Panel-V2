@@ -3,9 +3,11 @@ $(".add-student").on("click", function() {
     let studentEmail = $("#email").val();
 
     if(studentEmail && studentName){
+
         eel.add_student(studentName, studentEmail);
         alert('passed through!');
         $("#name, #email").val("");
+        
     } else alert("Please fill in all fields");
 });
 
@@ -15,8 +17,8 @@ $(".add-to-class").on("click", function() {
     let period = $("input[name='inline-radio']:checked");
 
     if(studentID && teacherID && period){
-            eel.add_student_class(studentID, parseInt(teacherID), period.val());
-            
+
+            eel.update_document('teachers', {"ID": teacherID}, {"$push": {["Classes."+period]: studentID}})
             $('#student-id-add, #teacher-id-add').val('');
             alert('passed through!')
 
@@ -29,8 +31,8 @@ $(".remove-from-class").on("click", function() {
     let period = $("input[name='inline-radio']:checked");
 
     if(studentID && teacherID && period.val()){
-            eel.remove_student_class(studentID, teacherID, period);
-            
+
+            eel.update_document('teachers', {"ID": teacherID}, {"$pop": {["Classes."+period]: studentID}});
             $('#student-id-remove, #teacher-id-remove').val('');
             alert('passed through!');
 

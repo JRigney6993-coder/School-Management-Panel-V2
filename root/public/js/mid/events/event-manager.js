@@ -1,5 +1,5 @@
 async function refresh_events() {
-    var eventData = await eel.load_events()();
+    var eventData = await eel.load_document('events')();
     $("tbody").empty();
 
     for (var i = 0; i < eventData.length; i++) {
@@ -105,8 +105,8 @@ async function refresh_events() {
                                 .on('click', function(){
                                     var row = $(this).closest("tr");
                                     var eventID = row.find("td:nth-child(7)").text();
-                                    eel.remove_event(parseInt(eventID, 10));
-                                    row.remove();
+                                    eel.remove_document('events', parseInt(eventID, 10));
+                                    refresh_events();
                                 })
                         )
                 )
@@ -139,22 +139,14 @@ refresh_events();
         let studentID = parseInt($("#SID").val());
         let eventID = parseInt($("#EID").val());
 
-        if (studentID && eventID) {
-            if (
-                Number.isInteger(parseInt(studentID)) &&
-                Number.isInteger(parseInt(eventID))
-            ) {
-                eel.add_attendees(eventID, studentID);
-                $("#SID, #EID").val("");
+        if (Number.isInteger(parseInt(studentID)) && Number.isInteger(parseInt(eventID))) {
 
-                refresh_events();
-                alert(
-                    "The student with the ID " +
-                        studentID +
-                        "has been added to the attendee list."
-                );
-            } else alert("Make sure ID's are a number");
-        } else alert("Please fill in all the fields");
+            eel.add_attendees(eventID, studentID);
+            $("#SID, #EID").val("");
+            refresh_events();
+            alert("The student with the ID " + studentID + " has been added to the attendee list.");
+
+        } else alert("Make sure to fill in all the fields or ID's are a number");
     });
 
     $("#messagesInput1-1").on("keyup", function () {

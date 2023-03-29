@@ -16,18 +16,60 @@ management = db["management"]
 events = db["events"]
 reports = db["reports"]
 
-####################
-# Useful Functions #
-####################
-
+#######################
+# Universal Functions #
+#######################
 
 def bcrypt_password(password):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
+
+def event_ids_rewrite(collection):
+    _collection = collection.find()
+    for i, document in enumerate(_collection):
+        collection.update_one({'_id': document['_id']}, {'$set': {'ID': i}})
+
+
+@eel.expose
+def get_document_num(collection):
+    _collection = db[collection]
+    return _collection.count_documents({})
+
+
+@eel.expose
+def load_document(collection):
+    _collection = db[collection]
+    return list(_collection.find({}))
+
+
+@eel.expose
+def remove_document(collection, id, email=None):
+    _collection = db[collection]
+    if email is None:
+        _collection.delete_one({"ID": id})
+    else:
+        _collection.delete_one({"Email": email, "ID": id})
+    event_ids_rewrite(_collection)
+
+
+@eel.expose
+def update_document(collection, query, update):
+    collection = db[collection]
+    collection.update_one(query, update)
+
+
+@eel.expose
+def add_attendees(event_id, student_id):
+    if event_id <= events.count_documents({}):
+        students.update_one({"ID": student_id}, {"$inc": {"Points": 1}})
+        events.update_one({"ID": event_id}, {
+                          "$push": {"Attendees": student_id}})
+    else:
+        return False
+
 #########
 # Login #
 #########
-
 
 @eel.expose
 def login(email, password):
@@ -39,10 +81,9 @@ def login(email, password):
     else:
         return False
 
-######################
-# Student Management #
-######################
-
+############
+# Creation #
+############
 
 @eel.expose
 def add_student(full_name, email):
@@ -67,42 +108,6 @@ def add_student(full_name, email):
 
 
 @eel.expose
-def update_student(ID, selector, change):
-    students.update_one({"ID": ID}, {"$set": {selector: change}})
-
-
-@eel.expose
-def add_student_class(student_id, teacher_id, period):
-    teachers.update_one({"ID": teacher_id}, {
-                        "$push": {f"Classes.{period}": student_id}})
-
-
-@eel.expose
-def remove_student_class(student_id, teacher_id, period):
-    teachers.update_one({"ID": teacher_id}, {
-                        "$pop": {f"Classes.{period}": student_id}})
-
-
-@eel.expose
-def add_absence(student_id, absences):
-    students.update_one({"ID": student_id}, {"$inc": {"Absences": absences}})
-
-
-@eel.expose
-def add_grade(student_id, period, grade):
-    students.update_one({"ID": student_id}, {
-                        "$set": {"Grades": {period: grade}}})
-
-
-@eel.expose
-def add_referrals(student_id, referral):
-    students.update_one({"ID": student_id}, {"$set": {"Referrals": referral}})
-######################
-# Teacher Management #
-######################
-
-
-@eel.expose
 def create_teacher(first_name, last_name, email, password):
     teacher = {
         "First_name": first_name,
@@ -123,15 +128,6 @@ def create_teacher(first_name, last_name, email, password):
 
 
 @eel.expose
-def remove_teacher(email, ID):
-    teachers.delete_one({"Email": email, "ID": ID})
-
-####################
-# Admin Management #
-####################
-
-
-@eel.expose
 def create_admin(first_name, last_name, email, password):
     admin = {
         "First_name": first_name,
@@ -146,25 +142,6 @@ def create_admin(first_name, last_name, email, password):
 
 
 @eel.expose
-def remove_admin(email, Id):
-    admins.delete_one({"Email": email, "ID": Id})
-
-####################
-# Event Management #
-####################
-
-
-@eel.expose
-def get_event_num():
-    return events.count_documents({})
-
-
-@eel.expose
-def load_events():
-    return list(events.find({}))
-
-
-@eel.expose
 def create_event(start_date, end_date, event_name, desc, location):
     event = {
         "Event_Name": event_name,
@@ -176,21 +153,6 @@ def create_event(start_date, end_date, event_name, desc, location):
         "ID": events.count_documents({})
     }
     events.insert_one(event)
-
-
-@eel.expose
-def remove_event(event_id):
-    events.delete_one({"ID": event_id})
-
-
-@eel.expose
-def add_attendees(event_id, student_id):
-    if event_id <= events.count_documents({}):
-        students.update_one({"ID": student_id}, {"$inc": {"Points": 1}})
-        events.update_one({"ID": event_id}, {
-                          "$push": {"Attendees": student_id}})
-    else:
-        return False
 
 #####################
 # Report Management #

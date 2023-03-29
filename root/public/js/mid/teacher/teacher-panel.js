@@ -5,7 +5,8 @@ $('.add-absence').on('click', function () {
     if (studentID && absence) {
         if (Number.isInteger(parseInt(studentID))) {
             if (absence === '1' || absence === '-1') {
-                // eel.add_absence(studentID, absence)
+                
+                eel.update_document('students', {"ID": studentID}, {"$inc": {"Absences": absence}})
                 $('#student-id, #absence').val('');
                 alert('passed through!');
                 
@@ -25,7 +26,8 @@ $('.add-grade').on('click',function () {
         if (Number.isInteger(parseInt(studentID))) {
             if (period <= 4 && period >= 1) {
                 if (grade <= 100 && grade >= 0) {
-                    // eel.add_grade(studentID, period, grade);
+                    
+                    eel.update_document('students', {"ID": studentID}, {"$set": {"Grades": {period: grade}}})
                     $('#student-id, #grade').val('');
                     alert('passed through!');
 
@@ -44,8 +46,8 @@ $('.add-referral').on('click', function () {
     if (studentID && period && referral) {
         if (period <= 4 && period >= 1) {
             if (referral.length <= 200) {
-                // eel.add_referrals(studentID, referral)
-
+                
+                eel.update_document('students', {"ID": studentID}, {"$set": {"Referrals": referral}})
                 $('#student-id, #referral').val('');
                 alert('passed through!');
 
