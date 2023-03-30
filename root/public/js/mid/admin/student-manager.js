@@ -18,10 +18,9 @@ $(".add-to-class").on("click", function() {
 
     if(studentID && teacherID && period){
 
-            eel.update_document('teachers', {"ID": teacherID}, {"$push": {["Classes."+period]: studentID}})
+            eel.update_document('teachers', {"ID": parseInt(teacherID)}, {"$push": {["Classes." + period.val()]: studentID}})
             $('#student-id-add, #teacher-id-add').val('');
             alert('passed through!')
-
     } else alert("Please fill in all fields");
 });
 
@@ -31,10 +30,9 @@ $(".remove-from-class").on("click", function() {
     let period = $("input[name='inline-radio']:checked");
 
     if(studentID && teacherID && period.val()){
-
-            eel.update_document('teachers', {"ID": teacherID}, {"$pop": {["Classes."+period]: studentID}});
-            $('#student-id-remove, #teacher-id-remove').val('');
-            alert('passed through!');
+       eel.update_document('teachers', {"ID": parseInt(teacherID)}, {"$pull": {["Classes." + period.val()]: studentID}});
+        $('#student-id-remove, #teacher-id-remove').val('');
+        alert('passed through!');
 
     } else alert("Please fill in all fields");
 });
