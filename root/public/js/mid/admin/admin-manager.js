@@ -21,9 +21,7 @@ $('.remove-admin').on('click',function () {
 
     if (adminID && email) {
         if (Number.isInteger(parseInt(adminID))) {
-            // Code here
-
-            eel.remove_document('admins', adminID, email)
+            eel.remove_document('admins', parseInt(adminID), email)
             $('#admin-id, #email-remove').val('');
             alert('passed through!');
 

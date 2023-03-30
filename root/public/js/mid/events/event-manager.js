@@ -4,7 +4,6 @@ async function refresh_events() {
 
     for (var i = 0; i < eventData.length; i++) {
         let data = Object.values(eventData[i]);
-        console.log(data);
 
         var $row = $("<tr>").append(
             $("<td>")

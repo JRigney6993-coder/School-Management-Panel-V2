@@ -20,8 +20,11 @@ reports = db["reports"]
 # Universal Functions #
 #######################
 
+
 def bcrypt_password(password):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+# --------------------------------------------------------------------------------
 
 
 def event_ids_rewrite(collection):
@@ -29,17 +32,23 @@ def event_ids_rewrite(collection):
     for i, document in enumerate(_collection):
         collection.update_one({'_id': document['_id']}, {'$set': {'ID': i}})
 
+# --------------------------------------------------------------------------------
+
 
 @eel.expose
 def get_document_num(collection):
     _collection = db[collection]
     return _collection.count_documents({})
 
+# --------------------------------------------------------------------------------
+
 
 @eel.expose
 def load_document(collection):
     _collection = db[collection]
     return list(_collection.find({}))
+
+# --------------------------------------------------------------------------------
 
 
 @eel.expose
@@ -51,11 +60,15 @@ def remove_document(collection, id, email=None):
         _collection.delete_one({"Email": email, "ID": id})
     event_ids_rewrite(_collection)
 
+# --------------------------------------------------------------------------------
+
 
 @eel.expose
 def update_document(collection, query, update):
     collection = db[collection]
     collection.update_one(query, update)
+
+# --------------------------------------------------------------------------------
 
 
 @eel.expose
@@ -71,6 +84,7 @@ def add_attendees(event_id, student_id):
 # Login #
 #########
 
+
 @eel.expose
 def login(email, password):
     user = teachers.find_one({"Email": email}) or admins.find_one(
@@ -84,6 +98,7 @@ def login(email, password):
 ############
 # Creation #
 ############
+
 
 @eel.expose
 def add_student(full_name, email):
@@ -106,6 +121,8 @@ def add_student(full_name, email):
     }
     students.insert_one(student)
 
+# --------------------------------------------------------------------------------
+
 
 @eel.expose
 def create_teacher(first_name, last_name, email, password):
@@ -126,6 +143,8 @@ def create_teacher(first_name, last_name, email, password):
     }
     teachers.insert_one(teacher)
 
+# --------------------------------------------------------------------------------
+
 
 @eel.expose
 def create_admin(first_name, last_name, email, password):
@@ -139,6 +158,8 @@ def create_admin(first_name, last_name, email, password):
         "Bio": ""
     }
     admins.insert_one(admin)
+
+# --------------------------------------------------------------------------------
 
 
 @eel.expose
