@@ -43,7 +43,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text("0.0")
+                                .text("WIP")
                         )
                 ),
             $("<td>")
@@ -96,18 +96,9 @@ async function refresh_events() {
                     $("<div>")
                         .addClass("flex items-center h-16 px-6")
                         .append(
-                            $("<button>")
-                                .addClass(
-                                    "inline-flex h-9 py-1 px-4 mb-2 items-center text-center text-sm font-bold text-white bg-blue-500 hover:bg-blue-600 transition duration-200 rounded-lg add-attendee button-center"
-                                )
-                                .attr("id", "remove")
-                                .text("Remove")
-                                .on('click', function () {
-                                    var row = $(this).closest("tr");
-                                    var eventID = row.find("td:nth-child(7)").text();
-                                    eel.remove_document('admins', parseInt(eventID, 10));
-                                    refresh_events();
-                                })
+                            $("<span>")
+                                .addClass("text-sm font-medium text-gray-100")
+                                .text("WIP")
                         )
                 )
         );
@@ -127,6 +118,7 @@ $('.add-absence').on('click', function () {
             if (absence === '1' || absence === '-1') {
 
                 eel.update_document('students', { "ID": studentID }, { "$inc": { "Absences": absence } })
+                refresh_events()
                 $('#student-id, #absence').val('');
                 alert('passed through!');
 
@@ -148,6 +140,7 @@ $('.add-grade').on('click', function () {
                 if (grade <= 100 && grade >= 0) {
 
                     eel.update_document('students', { "ID": studentID }, { "$set": { "Grades": { period: grade } } })
+                    refresh_events()
                     $('#student-id, #grade').val('');
                     alert('passed through!');
 
@@ -168,6 +161,7 @@ $('.add-referral').on('click', function () {
             if (referral.length <= 200) {
 
                 eel.update_document('students', { "ID": studentID }, { "$set": { "Referrals": referral } })
+                refresh_events()
                 $('#student-id, #referral').val('');
                 alert('passed through!');
 

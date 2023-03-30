@@ -181,4 +181,4 @@ def create_event(start_date, end_date, event_name, desc, location):
 
 
 # Start the index.html file / Brings user to the login page
-eel.start("index.html", size=(1400, 900))
+eel.start("dashboard.html", size=(1400, 900))
