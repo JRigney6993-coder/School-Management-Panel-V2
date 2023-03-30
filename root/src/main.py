@@ -79,6 +79,8 @@ def add_attendees(event_id, student_id):
                           "$push": {"Attendees": student_id}})
     else:
         return False
+    
+
 
 #########
 # Login #
@@ -131,6 +133,7 @@ def create_teacher(first_name, last_name, email, password):
         "Last_name": last_name,
         "Email": email,
         "ID": teachers.count_documents({}),
+        "Breaks": 0,
         "Password": bcrypt_password(password),
         "Profile_pic": "",
         "Bio": "",
@@ -181,4 +184,4 @@ def create_event(start_date, end_date, event_name, desc, location):
 
 
 # Start the index.html file / Brings user to the login page
-eel.start("dashboard.html", size=(1400, 900))
+eel.start("dashboard.html")
