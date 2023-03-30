@@ -157,6 +157,7 @@ def create_admin(first_name, last_name, email, password):
         "Email": email,
         "Password": bcrypt_password(password),
         "ID": admins.count_documents({}),
+        "Breaks": 0,
         "Profile_pic": "",
         "Bio": ""
     }
