@@ -114,7 +114,9 @@ async function refresh_events() {
         $("tbody").append($row);
     }
 }
-refresh_events();
+
+$(document).ready(function(){
+    refresh_events();
 
     $(".create-event").on("click", function () {
         let startDate = $("#start-date").val();
@@ -125,28 +127,31 @@ refresh_events();
 
         if (startDate && endDate && location && name && presets) {
             if (name.length <= 15) {
+
                 eel.create_event(startDate, endDate, name, presets, location);
                 $("#start-date, #end-date, #location, #name, #presets").val("");
-
                 refresh_events();
+
                 alert("The " + name + " event has been created!");
-            } else alert("Name must be less than 15 characters");
-        } else alert("Please fill in all the fields");
+            } else alert("Name must be less than 15 characters.");
+        } else alert("Please fill in all the fields.");
     });
+
 
     $(".add-attendee").on("click", function () {
         let studentID = parseInt($("#SID").val());
         let eventID = parseInt($("#EID").val());
 
-        if (Number.isInteger(parseInt(studentID)) && Number.isInteger(parseInt(eventID))) {
+        if (Number.isInteger(studentID) && Number.isInteger(eventID)) {
 
             eel.add_attendees(eventID, studentID);
             $("#SID, #EID").val("");
             refresh_events();
-            alert("The student with the ID " + studentID + " has been added to the attendee list.");
 
-        } else alert("Make sure to fill in all the fields or ID's are a number");
+            alert("The student with the ID " + studentID + " has been added to the attendee list.");
+        } else alert("Make sure to fill in all the fields or ID's are a number.");
     });
+
 
     $("#messagesInput1-1").on("keyup", function () {
         var inputVal = $(this).val().toLowerCase();
@@ -161,3 +166,4 @@ refresh_events();
             }
         });
     });
+});

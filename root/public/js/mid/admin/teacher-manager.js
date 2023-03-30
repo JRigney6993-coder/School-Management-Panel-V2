@@ -115,28 +115,32 @@ $(document).ready(function () {
         let password = $("#password").val();
 
         if (firstName && lastName && email && password) {
+            if (password.length >= 12) {
 
-            alert('passed through!');
-            eel.create_teacher(firstName, lastName, email, password);
-            refresh_events();
-            $("#first-name, #last-name, #email-add, #password").val('');
+                eel.create_teacher(firstName, lastName, email, password);
+                refresh_events();
+                $("#first-name, #last-name, #email-add, #password").val('');
+                alert('Teacher: ' + firstName + ' ' + lastName + ' | ' + email + ' has been added.');
 
-        } else alert("Please fill in all the fields");
+            } else alert("Password must be at least 12 characters.");
+        } else alert("Please fill in all the fields.");
     });
+
 
     $(".add-break-days").on("click", function () {
         let teacherID = parseInt($("#teacher-id").val());
         let days = parseInt($("#break-days").val());
 
-        if (teacherID && days) {
+        if (Number.isInteger(teacherID) && Number.isInteger(days)) {
 
-            alert('passed through!');
             eel.update_document('teachers', { "ID": teacherID }, { "$inc": { "Breaks": days } });
             refresh_events();
             $("#teacher-id, #break-days").val('');
+            alert('Teacher: ' + teacherID + ' has taken ' + days + ' days off.');
 
-        } else alert("Please fill in all the fields");
+        } else alert("Please fill in all the fields or make sure TID/days are numbers.");
     });
+
 
     $("#messagesInput1-1").on("keyup", function () {
         var inputVal = $(this).val().toLowerCase();
@@ -149,6 +153,7 @@ $(document).ready(function () {
             } else {
                 $(this).hide();
             }
+
         });
     });
-})
+});

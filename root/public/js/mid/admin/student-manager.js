@@ -127,38 +127,40 @@ $(document).ready(function () {
 
             eel.add_student(studentName, studentEmail);
             refresh_events();
-            alert('passed through!');
             $("#name, #email").val("");
-
-        } else alert("Please fill in all fields");
+            
+            alert('Student: ' + studentName + ' | ' + studentEmail + ' has been added.');
+        } else alert("Please fill in all fields.");
     });
 
     $(".add-to-class").on("click", function () {
         let studentID = parseInt($("#student-id-add").val());
-        let teacherID = $("#teacher-id-add").val();
+        let teacherID = parseInt($("#teacher-id-add").val());
         let period = $("input[name='inline-radio']:checked");
 
-        if (studentID && teacherID && period) {
+        if (Number.isInteger(studentID) && Number.isInteger(teacherID) && period) {
 
-            eel.update_document('teachers', { "ID": parseInt(teacherID) }, { "$push": { ["Classes." + period.val()]: studentID } })
+            eel.update_document('teachers', { "ID": teacherID }, { "$push": { ["Classes." + period.val()]: studentID } })
             refresh_events();
             $('#student-id-add, #teacher-id-add').val('');
-            alert('passed through!')
-        } else alert("Please fill in all fields");
+            
+            alert('Student: ' + studentID + ' has been added to ' + period.val() + ' | ' + teacherID);
+        } else alert("Please fill in all fields or make sure SID/TID is a number.");
     });
 
     $(".remove-from-class").on("click", function () {
         let studentID = parseInt($("#student-id-remove").val());
-        let teacherID = $("#teacher-id-remove").val();
+        let teacherID = parseInt($("#teacher-id-remove").val());
         let period = $("input[name='inline-radio']:checked");
 
-        if (studentID && teacherID && period.val()) {
-            eel.update_document('teachers', { "ID": parseInt(teacherID) }, { "$pull": { ["Classes." + period.val()]: studentID } });
+        if (Number.isInteger(studentID) && Number.isInteger(teacherID) && period) {
+
+            eel.update_document('teachers', { "ID": teacherID }, { "$pull": { ["Classes." + period.val()]: studentID } });
             refresh_events();
             $('#student-id-remove, #teacher-id-remove').val('');
-            alert('passed through!');
-
-        } else alert("Please fill in all fields");
+            
+            alert('Student: ' + studentID + ' has been removed from ' + period.val() + ' | ' + teacherID);
+        } else alert("Please fill in all fields or make sure SID/TID is a number.");
     });
 
     $("#messagesInput1-1").on("keyup", function () {

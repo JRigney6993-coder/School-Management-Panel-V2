@@ -110,27 +110,27 @@ $(document).ready(function () {
                 eel.create_admin(firstName, lastName, email, password);
                 refresh_events();
                 $('#first-name, #last-name, #email-add, #password').val('');
-                alert('passed through!');
-
-            } else alert('Password must be at least 12 characters');
-        } else alert('Make sure textfield is not empty');
+                
+                alert('Admin: ' + firstName + ' ' + lastName + ' | ' + email + ' has been added.');
+            } else alert('Password must be at least 12 characters.');
+        } else alert('Make sure textfield is not empty.');
     });
+
 
     $('.add-break-days').on('click', function () {
-        let adminID = $('#admin-id').val();
-        let email = $('#break-days').val();
+        let adminID = parseInt($('#admin-id').val());
+        let days = parseInt($('#break-days').val());
 
-        if (adminID && email) {
-            if (Number.isInteger(parseInt(adminID))) {
+        if (Number.isInteger(adminID)) {
 
-                eel.update_document('admins', { "ID": teacherID }, { "$inc": { "Breaks": days } });
-                refresh_events();
-                $('#admin-id, #break-days').val('');
-                alert('passed through!');
-
-            } else alert('Student ID must be an integer');
-        } else alert('Make sure textfield is not empty');
+            eel.update_document('admins', { "ID": teacherID }, { "$inc": { "Breaks": days } });
+            refresh_events();
+            $('#admin-id, #break-days').val('');
+            
+            alert('Admin: ' + adminID + ' has taken ' + days + ' days off.');
+        } else alert('Please fill in all fields or make sure AID/Days is a number.');
     });
+    
 
     $("#messagesInput1-1").on("keyup", function () {
         var inputVal = $(this).val().toLowerCase();
