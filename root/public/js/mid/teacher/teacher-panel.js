@@ -3,15 +3,13 @@ $('.add-absence').on('click', function () {
     let absence = $('#absence').val();
 
     if (studentID && absence) {
-        if (Number.isInteger(parseInt(studentID))) {
             if (absence === '1' || absence === '-1') {
                 
-                eel.update_document('students', {"ID": studentID}, {"$inc": {"Absences": absence}})
+                eel.update_document('students', {"ID": parseInt(studentID)}, {"$inc": {"Absences": parseInt(absence)}})
                 $('#student-id, #absence').val('');
                 alert('passed through!');
                 
             } else alert('Absence value must be either 1 or -1');
-        } else alert('Student ID must be an integer');
     } else alert('Make sure textfield is not empty');
 });
 
@@ -27,7 +25,7 @@ $('.add-grade').on('click',function () {
             if (period <= 4 && period >= 1) {
                 if (grade <= 100 && grade >= 0) {
                     
-                    eel.update_document('students', {"ID": studentID}, {"$set": {"Grades": {period: grade}}})
+                    eel.update_document('students', {"ID": parseInt(studentID)}, {"$set": {"Grades": {period: parseInt(grade)}}})
                     $('#student-id, #grade').val('');
                     alert('passed through!');
 
@@ -42,13 +40,14 @@ $('.add-grade').on('click',function () {
 $('.add-referral').on('click', function () {
     let studentID = $('#student-id').val();
     let referral = $('#referral').val();
+    let period = $('#period').val();
 
     if (studentID && period && referral) {
         if (period <= 4 && period >= 1) {
             if (referral.length <= 200) {
                 
-                eel.update_document('students', {"ID": studentID}, {"$set": {"Referrals": referral}})
-                $('#student-id, #referral').val('');
+                eel.update_document('students', {"ID": parseInt(studentID)}, {"$push": {"Referrals": referral}})
+                $('#student-id, #referral, #period').val('');
                 alert('passed through!');
 
             } else alert('Referral exceeds 200 characters');
