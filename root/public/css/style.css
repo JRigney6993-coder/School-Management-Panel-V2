@@ -30,6 +30,18 @@ tr:nth-child(even) {
     align-content: center;
 }
 
-.inline-flex{
+.logo{
+    height: 5rem;
+}
 
+.logoText{
+    font-size: 150%;
+    color: white;
+    font-weight: bold;
+}
+
+.logoCont{
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
 }
