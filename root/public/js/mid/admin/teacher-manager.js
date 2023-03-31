@@ -19,7 +19,7 @@ async function refresh_events() {
                                         .addClass(
                                             "text-sm font-medium text-gray-100"
                                         )
-                                        .text(await eel.xor_decrypt(data[1])() + " " + await eel.xor_decrypt(data[2])())
+                                        .text(data[1] + " " + data[2])
                                 )
                         )
                 ),
@@ -31,7 +31,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(await eel.xor_decrypt(data[3])())
+                                .text(data[3])
                         )
                 ),
             $("<td>")

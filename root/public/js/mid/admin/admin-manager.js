@@ -4,7 +4,6 @@ async function refresh_events() {
 
     for (var i = 0; i < eventData.length; i++) {
         let data = Object.values(eventData[i]);
-        console.log(eel.xor_decrypt(data[1])());
 
         var $row = $("<tr>").append(
             $("<td>")
@@ -20,7 +19,7 @@ async function refresh_events() {
                                         .addClass(
                                             "text-sm font-medium text-gray-100"
                                         )
-                                        .text(await eel.xor_decrypt(data[1])() + " " + await eel.xor_decrypt(data[2])())
+                                        .text(data[1] + " " + data[2])
                                 )
                         )
                 ),
@@ -32,7 +31,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(await eel.xor_decrypt(data[3])())
+                                .text(data[3])
                         )
                 ),
 
@@ -94,8 +93,6 @@ async function refresh_events() {
         $("tbody").append($row);
     }
 }
-
-$(document).ready(function () {
     refresh_events();
 
 
@@ -203,5 +200,4 @@ Student ID / Name / Email / GPA / Points / Absences / Referrals
 
 
             `);
-    });
-});
+    });S
