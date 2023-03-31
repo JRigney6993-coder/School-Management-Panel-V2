@@ -47,6 +47,8 @@ def xor_encrypt(plaintext):
     # Return the encrypted bytes as a hex-encoded string
     return bytes(encrypted_bytes).hex()
 
+# --------------------------------------------------------------------------------
+
 
 @eel.expose
 def xor_decrypt(ciphertext):
