@@ -27,6 +27,50 @@ def bcrypt_password(password):
 # --------------------------------------------------------------------------------
 
 
+@eel.expose
+def xor_encrypt(plaintext):
+    key = "$L1f3 1s l1k3 @ g@m3 0f P@c M@n. !f you s33 gh0sts, y0u sh0uld prob@bly run."
+    # Convert the plaintext and key to bytes
+    plaintext = plaintext.encode()
+    key = key.encode()
+
+    # Create an empty list to hold the encrypted bytes
+    encrypted_bytes = []
+
+    # Iterate over each byte of the plaintext and XOR it with the corresponding byte of the key
+    for i in range(len(plaintext)):
+        # Use the modulo operator to loop through the key bytes repeatedly
+        key_byte = key[i % len(key)]
+        encrypted_byte = plaintext[i] ^ key_byte
+        encrypted_bytes.append(encrypted_byte)
+
+    # Return the encrypted bytes as a hex-encoded string
+    return bytes(encrypted_bytes).hex()
+
+
+@eel.expose
+def xor_decrypt(ciphertext):
+    key = "$L1f3 1s l1k3 @ g@m3 0f P@c M@n. !f you s33 gh0sts, y0u sh0uld prob@bly run."
+    # Convert the ciphertext and key to bytes
+    ciphertext_bytes = bytes.fromhex(ciphertext)
+    key_bytes = key.encode()
+
+    # Create an empty list to hold the decrypted bytes
+    decrypted_bytes = []
+
+    # Iterate over each byte of the ciphertext and XOR it with the corresponding byte of the key
+    for i in range(len(ciphertext_bytes)):
+        # Use the modulo operator to loop through the key bytes repeatedly
+        key_byte = key_bytes[i % len(key_bytes)]
+        decrypted_byte = ciphertext_bytes[i] ^ key_byte
+        decrypted_bytes.append(decrypted_byte)
+
+    # Return the decrypted bytes as a string
+    return bytes(decrypted_bytes).decode()
+
+# --------------------------------------------------------------------------------
+
+
 def event_ids_rewrite(collection):
     _collection = collection.find()
     for i, document in enumerate(_collection):
@@ -79,7 +123,6 @@ def add_attendees(event_id, student_id):
                           "$push": {"Attendees": student_id}})
     else:
         return False
-    
 
 
 #########
@@ -106,9 +149,9 @@ def login(email, password):
 def add_student(full_name, email):
     full_name = full_name.split(" ")
     student = {
-        "First_Name": full_name[0],
-        "Last_Name": full_name[1],
-        "Email": email,
+        "First_Name": xor_encrypt(full_name[0]),
+        "Last_Name": xor_encrypt(full_name[1]),
+        "Email": xor_encrypt(email),
         "ID": students.count_documents({}),
         "Points": 0,
         "Absences": 0,
@@ -129,9 +172,9 @@ def add_student(full_name, email):
 @eel.expose
 def create_teacher(first_name, last_name, email, password):
     teacher = {
-        "First_name": first_name,
-        "Last_name": last_name,
-        "Email": email,
+        "First_name": xor_encrypt(first_name),
+        "Last_name": xor_encrypt(last_name),
+        "Email": xor_encrypt(email),
         "ID": teachers.count_documents({}),
         "Breaks": 0,
         "Password": bcrypt_password(password),
@@ -152,9 +195,9 @@ def create_teacher(first_name, last_name, email, password):
 @eel.expose
 def create_admin(first_name, last_name, email, password):
     admin = {
-        "First_name": first_name,
-        "Last_name": last_name,
-        "Email": email,
+        "First_name": xor_encrypt(first_name),
+        "Last_name": xor_encrypt(last_name),
+        "Email": xor_encrypt(email),
         "Password": bcrypt_password(password),
         "ID": admins.count_documents({}),
         "Breaks": 0,

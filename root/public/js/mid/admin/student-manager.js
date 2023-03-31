@@ -20,7 +20,7 @@ async function refresh_events() {
                                         .addClass(
                                             "text-sm font-medium text-gray-100"
                                         )
-                                        .text(data[1] + " " + data[2])
+                                        .text(await eel.xor_decrypt(data[1])() + " " + await eel.xor_decrypt(data[2])())
                                 )
                         )
                 ),
@@ -32,7 +32,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(data[3])
+                                .text(await eel.xor_decrypt(data[3])())
                         )
                 ),
             $("<td>")
@@ -116,64 +116,62 @@ async function refresh_events() {
     }
 }
 
-$(document).ready(function () {
-    refresh_events();
+refresh_events();
 
-    $(".add-student").on("click", function () {
-        let studentName = $("#name").val();
-        let studentEmail = $("#email").val();
+$(".add-student").on("click", function () {
+    let studentName = $("#name").val();
+    let studentEmail = $("#email").val();
 
-        if (studentEmail && studentName) {
+    if (studentEmail && studentName) {
 
-            eel.add_student(studentName, studentEmail);
-            refresh_events();
-            $("#name, #email").val("");
-            
-            alert('Student: ' + studentName + ' | ' + studentEmail + ' has been added.');
-        } else alert("Please fill in all fields.");
-    });
+        eel.add_student(studentName, studentEmail);
+        refresh_events();
+        $("#name, #email").val("");
+        
+        alert('Student: ' + studentName + ' | ' + studentEmail + ' has been added.');
+    } else alert("Please fill in all fields.");
+});
 
-    $(".add-to-class").on("click", function () {
-        let studentID = parseInt($("#student-id-add").val());
-        let teacherID = parseInt($("#teacher-id-add").val());
-        let period = $("input[name='inline-radio']:checked");
+$(".add-to-class").on("click", function () {
+    let studentID = parseInt($("#student-id-add").val());
+    let teacherID = parseInt($("#teacher-id-add").val());
+    let period = $("input[name='inline-radio']:checked");
 
-        if (Number.isInteger(studentID) && Number.isInteger(teacherID) && period) {
+    if (Number.isInteger(studentID) && Number.isInteger(teacherID) && period) {
 
-            eel.update_document('teachers', { "ID": teacherID }, { "$push": { ["Classes." + period.val()]: studentID } })
-            refresh_events();
-            $('#student-id-add, #teacher-id-add').val('');
-            
-            alert('Student: ' + studentID + ' has been added to ' + period.val() + ' | ' + teacherID);
-        } else alert("Please fill in all fields or make sure SID/TID is a number.");
-    });
+        eel.update_document('teachers', { "ID": teacherID }, { "$push": { ["Classes." + period.val()]: studentID } })
+        refresh_events();
+        $('#student-id-add, #teacher-id-add').val('');
+        
+        alert('Student: ' + studentID + ' has been added to ' + period.val() + ' | ' + teacherID);
+    } else alert("Please fill in all fields or make sure SID/TID is a number.");
+});
 
-    $(".remove-from-class").on("click", function () {
-        let studentID = parseInt($("#student-id-remove").val());
-        let teacherID = parseInt($("#teacher-id-remove").val());
-        let period = $("input[name='inline-radio']:checked");
+$(".remove-from-class").on("click", function () {
+    let studentID = parseInt($("#student-id-remove").val());
+    let teacherID = parseInt($("#teacher-id-remove").val());
+    let period = $("input[name='inline-radio']:checked");
 
-        if (Number.isInteger(studentID) && Number.isInteger(teacherID) && period) {
+    if (Number.isInteger(studentID) && Number.isInteger(teacherID) && period) {
 
-            eel.update_document('teachers', { "ID": teacherID }, { "$pull": { ["Classes." + period.val()]: studentID } });
-            refresh_events();
-            $('#student-id-remove, #teacher-id-remove').val('');
-            
-            alert('Student: ' + studentID + ' has been removed from ' + period.val() + ' | ' + teacherID);
-        } else alert("Please fill in all fields or make sure SID/TID is a number.");
-    });
+        eel.update_document('teachers', { "ID": teacherID }, { "$pull": { ["Classes." + period.val()]: studentID } });
+        refresh_events();
+        $('#student-id-remove, #teacher-id-remove').val('');
+        
+        alert('Student: ' + studentID + ' has been removed from ' + period.val() + ' | ' + teacherID);
+    } else alert("Please fill in all fields or make sure SID/TID is a number.");
+});
 
-    $("#messagesInput1-1").on("keyup", function () {
-        var inputVal = $(this).val().toLowerCase();
+$("#messagesInput1-1").on("keyup", function () {
+    var inputVal = $(this).val().toLowerCase();
 
-        $("tbody tr").each(function () {
-            var rowText = $(this).text().toLowerCase();
+    $("tbody tr").each(function () {
+        var rowText = $(this).text().toLowerCase();
 
-            if (rowText.indexOf(inputVal) !== -1) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
+        if (rowText.indexOf(inputVal) !== -1) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
     });
 });
