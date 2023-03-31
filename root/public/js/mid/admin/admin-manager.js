@@ -94,52 +94,114 @@ async function refresh_events() {
         $("tbody").append($row);
     }
 }
-refresh_events();
 
-$('.add-admin').on('click', function () {
-    let firstName = $('#first-name').val();
-    let lastName = $('#last-name').val();
-    let email = $('#email-add').val();
-    let password = $('#password').val();
+$(document).ready(function () {
+    refresh_events();
 
-    if (firstName && lastName && email && password) {
-        if (password.length >= 12) {
 
-            eel.create_admin(firstName, lastName, email, password);
+
+    $('.add-admin').on('click', function () {
+        let firstName = $('#first-name').val();
+        let lastName = $('#last-name').val();
+        let email = $('#email-add').val();
+        let password = $('#password').val();
+
+        if (firstName && lastName && email && password) {
+            if (password.length >= 12) {
+
+                eel.create_admin(firstName, lastName, email, password);
+                refresh_events();
+                $('#first-name, #last-name, #email-add, #password').val('');
+
+                alert('Admin: ' + firstName + ' ' + lastName + ' | ' + email + ' has been added.');
+            } else alert('Password must be at least 12 characters.');
+        } else alert('Make sure textfield is not empty.');
+    });
+
+
+    $('.add-break-days').on('click', function () {
+        let adminID = parseInt($('#admin-id').val());
+        let days = parseInt($('#break-days').val());
+
+        if (Number.isInteger(adminID)) {
+
+            eel.update_document('admins', { "ID": teacherID }, { "$inc": { "Breaks": days } });
             refresh_events();
-            $('#first-name, #last-name, #email-add, #password').val('');
-            
-            alert('Admin: ' + firstName + ' ' + lastName + ' | ' + email + ' has been added.');
-        } else alert('Password must be at least 12 characters.');
-    } else alert('Make sure textfield is not empty.');
-});
+            $('#admin-id, #break-days').val('');
+
+            alert('Admin: ' + adminID + ' has taken ' + days + ' days off.');
+        } else alert('Please fill in all fields or make sure AID/Days is a number.');
+    });
 
 
-$('.add-break-days').on('click', function () {
-    let adminID = parseInt($('#admin-id').val());
-    let days = parseInt($('#break-days').val());
+    $("#messagesInput1-1").on("keyup", function () {
+        var inputVal = $(this).val().toLowerCase();
 
-    if (Number.isInteger(adminID)) {
+        $("tbody tr").each(function () {
+            var rowText = $(this).text().toLowerCase();
 
-        eel.update_document('admins', { "ID": teacherID }, { "$inc": { "Breaks": days } });
-        refresh_events();
-        $('#admin-id, #break-days').val('');
-        
-        alert('Admin: ' + adminID + ' has taken ' + days + ' days off.');
-    } else alert('Please fill in all fields or make sure AID/Days is a number.');
-});
+            if (rowText.indexOf(inputVal) !== -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
 
 
-$("#messagesInput1-1").on("keyup", function () {
-    var inputVal = $(this).val().toLowerCase();
+    $('.end-quarter').on("click", function () {
+        let report = $('#report')
+            .val(`
+[Report Number - {reportNum}]
+Total Students: {studentNum}
+Total Teachers: {teacherNum}
+Total Admins: {adminNum}
+Total Events: {eventsNum}
 
-    $("tbody tr").each(function () {
-        var rowText = $(this).text().toLowerCase();
+-------------------------------
 
-        if (rowText.indexOf(inputVal) !== -1) {
-            $(this).show();
-        } else {
-            $(this).hide();
-        }
+(Quarter Winners)
+
+Point winner:
+Student ID / Name / Points / Gpa / Prize
+{studentID} / {studentName} / {studentPoints} / {studentGPA} / {studentPrize}
+
+Random Grade Winners:
+Student ID / Name / Points / Gpa / Prize
+{studentID} / {studentName} / {studentPoints} / {studentGPA} / {studentPrize}
+
+-------------------------------
+
+(Events)
+
+Event ID / Name / Type / Location / Start Date / End Date / Attendees
+{eventID} / {eventName} / {eventType} / {eventLocation} / {eventStartDate} / {eventEndDate} / {eventAttendees}
+
+-------------------------------
+
+(Admins)
+
+Admin ID / Name / Email / Join Date / Breaks
+{adminID} / {adminName} / {adminEmail} / {adminJoinDate} / {adminBreaks}
+
+-------------------------------
+
+(Teachers)
+
+Teacher ID / Name / Email / Class Average / Join Date / Breaks
+{teacherID} / {teacherName} / {adminEmail} / {classAverage} / {teacherJoinDate} / {teacherBreaks}
+
+-------------------------------
+
+(Students)
+
+Student ID / Name / Email / GPA / Points / Absences / Referrals
+{studentID} / {studentName} / {studentEmail} / {studentGPA} / {studentPoints} / {studentAbsences} / {studentReferrals}
+
+-------------------------------
+
+
+
+            `);
     });
 });
