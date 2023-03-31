@@ -5,7 +5,7 @@
 }
 
 .text-xs {
-    /* white-space: nowrap; */
+    white-space: nowrap;
 }
 
 tr:nth-child(even) {
@@ -22,10 +22,14 @@ tr:nth-child(even) {
     }
 }
 
-.centering {
+.centering{
     text-align: center;
     justify-content: space-around;
     display: flex;
     flex-direction: row;
     align-content: center;
+}
+
+.inline-flex{
+
 }
