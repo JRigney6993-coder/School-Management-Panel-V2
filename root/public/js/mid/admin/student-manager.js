@@ -87,7 +87,7 @@ async function refresh_events() {
                         .append(
                             $("<span>")
                                 .addClass("text-sm font-medium text-gray-100")
-                                .text(data[4])
+                                .text(data[0])// .text(data[4])
                         )
                 ),
             $("<td>")
@@ -127,7 +127,7 @@ $(".add-student").on("click", function () {
         eel.add_student(studentName, studentEmail);
         refresh_events();
         $("#name, #email").val("");
-        
+
         alert('Student: ' + studentName + ' | ' + studentEmail + ' has been added.');
     } else alert("Please fill in all fields.");
 });
@@ -142,7 +142,7 @@ $(".add-to-class").on("click", function () {
         eel.update_document('teachers', { "ID": teacherID }, { "$push": { ["Classes." + period.val()]: studentID } })
         refresh_events();
         $('#student-id-add, #teacher-id-add').val('');
-        
+
         alert('Student: ' + studentID + ' has been added to ' + period.val() + ' | ' + teacherID);
     } else alert("Please fill in all fields or make sure SID/TID is a number.");
 });
@@ -157,7 +157,7 @@ $(".remove-from-class").on("click", function () {
         eel.update_document('teachers', { "ID": teacherID }, { "$pull": { ["Classes." + period.val()]: studentID } });
         refresh_events();
         $('#student-id-remove, #teacher-id-remove').val('');
-        
+
         alert('Student: ' + studentID + ' has been removed from ' + period.val() + ' | ' + teacherID);
     } else alert("Please fill in all fields or make sure SID/TID is a number.");
 });
