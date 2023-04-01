@@ -1,3 +1,4 @@
+import random
 import bcrypt
 import eel
 import pymongo
@@ -98,10 +99,25 @@ def add_grade(student_id, period, assignment_grade):
 # --------------------------------------------------------------------------------
 
 
+def get_random_docs(exclude_doc=None):
+    query = {}  # query to fetch all documents except the exclude_doc
+    if exclude_doc is not None:
+        query = {"_id": {"$ne": exclude_doc["_id"]}}
+
+    count = students.count_documents(query)
+    if count < 4:
+        cursor = students.find(query)
+    else:
+        indices = random.sample(range(count), k=4)
+        cursor = students.find(query).limit(4).skip(indices[0]).skip(
+            indices[1]).skip(indices[2]).skip(indices[3])
+    return list(cursor)
+
+
 @eel.expose
 def quarter_report():
     values = [students.count_documents({}), teachers.count_documents({}), admins.count_documents(
-        {}), events.count_documents({}), students.find_one(sort=[("Points", pymongo.DESCENDING)])]
+        {}), events.count_documents({}), students.find_one(sort=[("Points", pymongo.DESCENDING)]), get_random_docs(students.find_one(sort=[("Points", pymongo.DESCENDING)]))]
     return values
 
 
