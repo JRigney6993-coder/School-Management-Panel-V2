@@ -1,5 +1,6 @@
 import bcrypt
 import eel
+import pymongo
 from pymongo import MongoClient
 
 eel.init("root/public")
@@ -93,6 +94,15 @@ def add_grade(student_id, period, assignment_grade):
 
     students.update_one({"ID": student_id}, {"$set":
                         {f"Grades.Period_{period}.0": avg_grade}})
+
+# --------------------------------------------------------------------------------
+
+
+@eel.expose
+def quarter_report():
+    values = [students.count_documents({}), teachers.count_documents({}), admins.count_documents(
+        {}), events.count_documents({}), students.find_one(sort=[("Points", pymongo.DESCENDING)])]
+    return values
 
 
 #########

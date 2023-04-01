@@ -146,58 +146,42 @@ async function refresh_events() {
     });
 
 
-    $('.end-quarter').on("click", function () {
-        let report = $('#report')
-            .val(`
-[Report Number - {reportNum}]
-Total Students: {studentNum}
-Total Teachers: {teacherNum}
-Total Admins: {adminNum}
-Total Events: {eventsNum}
+    $('.end-quarter').on("click", async function () {
+        console.log(await eel.quarter_report()());
+    });
+//         let report = $('#report')
+//             .val(`
+// [Report Number - {reportNum}]
+// Total Students: {studentNum}
+// Total Teachers: {teacherNum}
+// Total Admins: {adminNum}
+// Total Events: {eventsNum}
 
--------------------------------
+// -------------------------------
 
-(Quarter Winners)
+// (Quarter Winners)
 
-Point winner:
-Student ID / Name / Points / Gpa / Prize
-{studentID} / {studentName} / {studentPoints} / {studentGPA} / {studentPrize}
+// Point winner:
+// Student ID / Name / Points / Gpa / Prize
+// {studentID} / {studentName} / {studentPoints} / {studentGPA} / {studentPrize}
 
-Random Grade Winners:
-Student ID / Name / Points / Gpa / Prize
-{studentID} / {studentName} / {studentPoints} / {studentGPA} / {studentPrize}
+// Random Grade Winners:
+// Student ID / Name / Points / Gpa / Prize
+// {studentID} / {studentName} / {studentPoints} / {studentGPA} / {studentPrize}
 
--------------------------------
+// -------------------------------
 
-(Events)
+// (Events)
 
-Event ID / Name / Type / Location / Start Date / End Date / Attendees
-{eventID} / {eventName} / {eventType} / {eventLocation} / {eventStartDate} / {eventEndDate} / {eventAttendees}
+// Event ID / Name / Type / Location / Start Date / End Date / Attendees
+// {eventID} / {eventName} / {eventType} / {eventLocation} / {eventStartDate} / {eventEndDate} / {eventAttendees}
 
--------------------------------
+// -------------------------------
 
-(Admins)
+// (Students)
 
-Admin ID / Name / Email / Join Date / Breaks
-{adminID} / {adminName} / {adminEmail} / {adminJoinDate} / {adminBreaks}
+// Student ID / Name / Email / GPA / Points / Absences / Referrals
+// {studentID} / {studentName} / {studentEmail} / {studentGPA} / {studentPoints} / {studentAbsences} / {studentReferrals}
 
--------------------------------
-
-(Teachers)
-
-Teacher ID / Name / Email / Class Average / Join Date / Breaks
-{teacherID} / {teacherName} / {adminEmail} / {classAverage} / {teacherJoinDate} / {teacherBreaks}
-
--------------------------------
-
-(Students)
-
-Student ID / Name / Email / GPA / Points / Absences / Referrals
-{studentID} / {studentName} / {studentEmail} / {studentGPA} / {studentPoints} / {studentAbsences} / {studentReferrals}
-
--------------------------------
-
-
-
-            `);
-    });S
+// -------------------------------
+//     `);
