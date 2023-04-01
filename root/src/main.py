@@ -29,6 +29,21 @@ def bcrypt_password(password):
 # --------------------------------------------------------------------------------
 
 
+@eel.expose
+def get_teacher(email):
+    teacher = teachers.find_one({"Email": email})
+    students = []
+    for i in range(1, 5):
+        students.append(teacher["Classes"][f"Period_{i}"])
+    return students
+
+
+@eel.expose
+def get_students(id):
+    return students.find_one({"ID": id})
+# --------------------------------------------------------------------------------
+
+
 def event_ids_rewrite(collection):
     _collection = collection.find()
     for i, document in enumerate(_collection):
