@@ -137,7 +137,7 @@ $('.add-grade').on('click', function () {
         if (period <= 4 && period >= 1) {
             if (grade <= 100 && grade >= 0) {
 
-                eel.update_document('students', { "ID": studentID }, { "$set": { "Grades": { period: grade } } })
+                eel.add_grade(studentID, period, grade)
                 refresh_events()
                 $('#student-id, #grade').val('');
 

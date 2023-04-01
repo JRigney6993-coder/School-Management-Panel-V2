@@ -80,6 +80,20 @@ def add_attendees(event_id, student_id):
     else:
         return False
 
+# --------------------------------------------------------------------------------
+
+
+@eel.expose
+def add_grade(student_id, period, assignment_grade):
+    students.update_one({"ID": student_id}, {
+                        "$push": {f"Grades.Period_{period}": assignment_grade}})
+    student = students.find_one({"ID": student_id})
+    grades = student["Grades"][f"Period_{period}"]
+    avg_grade = (sum(grades)) / (len(grades))
+
+    students.update_one({"ID": student_id}, {"$set":
+                        {f"Grades.Period_{period}.0": avg_grade}})
+
 
 #########
 # Login #
@@ -114,10 +128,10 @@ def add_student(full_name, email):
         "Referrals": [],
         "Prizes": [],
         "Grades": {
-            "Period_1": 100,
-            "Period_2": 100,
-            "Period_3": 100,
-            "Period_4": 100
+            "Period_1": [100],
+            "Period_2": [100],
+            "Period_3": [100],
+            "Period_4": [100]
         }
     }
     students.insert_one(student)
