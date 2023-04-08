@@ -2,6 +2,8 @@
 
 This document outlines the development process and information related to the School Management Panel project, a software solution primarily focused on student events and participation. The software awards points to students based on their participation in events, and at the end of each quarter, the highest pointed student and four random students from different grade levels receive prizes based on their accumulated points.
 
+**PROJECT ENDED DUE TO REASONS!**
+
 ## Table of Contents
 
 - [Technologies Used](#technologies-used)
